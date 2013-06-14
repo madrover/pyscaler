@@ -15,7 +15,7 @@ import sys, os
 
 # Miquel custom configuration
 # http://yml-blog.blogspot.com.es/2009/06/sphinx-autodoc-and-django-app.html
-sys.path.append("/opt/django/pyscaler")
+sys.path.append("../")
 print os.getcwd()
 
 from pyscaler import settings
