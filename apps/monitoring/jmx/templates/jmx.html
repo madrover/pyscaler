@@ -1,0 +1,51 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}JMX{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+	<h1>Monitoring</h1>
+
+{% endblock %}
+
+
+{% block body %}
+<style>
+	.menutable {border: 2px solid white;}
+	.menutabletd {background-color:#EEEEEE;border: 2px solid white; width:250px;padding:10px;}
+</style>
+
+<h1>JMX</h1>
+
+<table class="menutable">
+<tr><th>Clusters</th><th>Nodes</th><th>JVMs</th></tr>
+{% for cluster in clusters %}
+<tr>
+	<td class="menutabletd">
+		<ul>
+			<li><a href="cluster/{{cluster.name}}">{{cluster.name}}</a></li>
+		</ul>
+	</td>
+	<td class="menutabletd">
+			<ul>
+			{% for node in cluster.nodes.all %}
+				<li><a href="node/{{node.name}}">{{node.name}}</a></li>
+			{% endfor %}
+			</ul>
+	</td>
+	<td class="menutabletd">
+			<ul>
+			{% for node in cluster.nodes.all %}
+				{% for jvm in node.jvmprofiles.all %}
+				<li><a href="jvm/{{jvm.node.name}}/{{jvm.name}}">{{node.name}}/{{jvm.name}}</a></li>
+				{% endfor %}
+			{% endfor %}
+			</ul>
+	</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

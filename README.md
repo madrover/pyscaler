@@ -1,9 +1,4 @@
-pinax-project-account
+PyScaler
 =====================
 
-a starter project the incorporates account features from django-user-accounts
-
-
-Usage:
-
-    django-admin.py startproject --template=https://github.com/pinax/pinax-project-account/zipball/master <project_name>
+A Django based application that is able to monitor remote hosts via SSH scripts or connecting to JVMs via JMX.

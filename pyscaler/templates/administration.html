@@ -1,0 +1,63 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Monitoring{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+	<h1>Administration</h1>
+
+{% endblock %}
+
+{% block body %}
+
+  <iframe name="ifrm" id="ifrm" src="/admin" seamless scrolling="auto" width="100%" height="1">
+        Your browser doesn't support iframes.
+    </iframe>
+
+{% endblock %}
+{% block extra_script %}
+	<script language="javascript" type="text/javascript" src="/site_media/static/administration/js/jquery.iframe-auto-height.js"></script>
+	<!---
+	<script type="text/javascript">
+		function resizeIframe(iframe) {
+			iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
+			$("#ifrm").contents().find("#grp-navigation").hide();
+			$("#ifrm").contents().find("#grp-content").css("top","0px");
+		}
+	
+		-->
+
+	<script type="text/javascript">
+	// fire iframe resize when window is resized
+var windowResizeFunction = function (resizeFunction, iframe) {
+  $(window).resize(function () {
+    console.debug("window resized - firing resizeHeight on iframe");
+    $("#ifrm").contents().find("#grp-navigation").hide();
+    resizeFunction(iframe);
+  });
+};
+
+// fire iframe resize when a link is clicked
+var clickFunction = function (resizeFunction, iframe) {
+  $('a').click(function () {
+    $(iframe).contents().find('body').html(''); // clear content of iframe
+    console.debug("link clicked - firing resizeHeight on iframe");
+    
+    resizeFunction(iframe);
+    $("#ifrm").contents().find("#grp-navigation").hide();
+  });
+};
+
+$('iframe').iframeAutoHeight({
+  debug: true,
+  triggerFunctions: [
+    windowResizeFunction,
+    clickFunction
+  ],
+  callback: function(callbackObject) { $("#ifrm").contents().find("#grp-navigation").hide();}
+});
+	</script>
+{% endblock %}

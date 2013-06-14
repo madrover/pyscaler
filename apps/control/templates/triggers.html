@@ -1,0 +1,147 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}
+Triggers
+{% endblock %}
+
+
+
+{% block body %}
+<style>
+	.menutable {border: 2px solid white;}
+	.menutabletd {background-color:#EEEEEE;border: 2px solid white; width:250px;padding:10px;}
+</style>
+
+
+<h1>Triggers</h1>
+
+<form action="">
+<table class="menutable">
+<tr>
+    <th>Cluster</th>
+    <th>Triggers</th>
+	<th>Actions</th>
+
+</tr>
+<tr>
+    <td class="menutabletd">
+    	<div id="clusters">
+	    	{% for cluster in clusters %}
+			<input type="radio" name="cluster" value="{{cluster.name}}">{{cluster.name}}<br>
+			{% endfor %}
+		</div>
+   	</td>
+    <td class="menutabletd">
+    	<div id="triggers"></div>
+   	</td>
+    <td class="menutabletd">
+		<div id="actions"></div>
+   	</td>
+</tr>
+<tr>
+    <th colspan = "3"> <div style="width:750px;float:left;text-align:left">Actions</div></th>
+</tr>
+<tr>
+    <td colspan = "3">
+    	<button id="executescript" >Execute TriggerAction</button>
+    </td>
+</tr>
+<tr>
+    <th colspan = "3"> <div style="width:750px;float:left;text-align:left">Output</div></th>
+</tr>
+<tr>
+    <td colspan = "3"><div id="output"style="background-color:#EEEEEE";height:200px;width:800px;float:left></div></td>
+</tr>
+</table>
+
+</form>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+$(document).ready(function(){
+    // Populate node div
+	$('form').on('click', 'input:radio[name="cluster"]', function(event){
+        $.get('/control/cluster/' + $(this).val() + "/triggerlist", function(data) {
+        	triggers="";
+        	for (var i=0; i < data.triggers.length; i++) {
+			 triggers = triggers + '<input type="radio" name="trigger" value="' + data.triggers[i] +'">' + data.triggers[i] +'<br>'
+			};
+			$("#triggers").html(triggers);
+       	});	
+    });
+	$('form').on('click', 'input:radio[name="trigger"]', function(event){
+        $.get('/control/trigger/' + $(this).val() + "/actionlist/", function(data) {
+        	actions="";
+        	for (var i=0; i < data.actions.length; i++) {
+			 actions = actions + "<b>" + data.actions[i][0] +' - </b>' + data.actions[i][1] +'<br>';
+			};
+			$("#actions").html(actions);
+       	});	
+    });
+    $('form').on('click', '#executescript', function(event){
+    	//Preventing button default action to be executed
+    	event.preventDefault();
+    	//Erasing output div counter
+    	$('#output').html("");
+		//Getting cluster value
+    	var cluster = 	$('input:radio[name=cluster]:checked').val();
+    	// Checking if cluster is marked
+    	if (typeof cluster === "undefined") {
+    		$('#output').append("<b>Cluster not chosen</b>");
+    		return;
+    	}	
+    	//Getting script value
+    	var trigger = 	$('input:radio[name=trigger]:checked').val();
+    	// Checking if script is marked
+    	if (typeof trigger === "undefined") {
+    		$('#output').append("<b>Trigger not chosen</b>");
+    		return;
+    	}
+    	var ac = 	$('input:radio[name=trigger]:checked').val();
+    	// Checking if script is marked
+    	if (typeof trigger === "undefined") {
+    		$('#output').append("<b>Trigger not chosen</b>");
+    		return;
+    	}
+
+		var executeurl = "/control/trigger/" + trigger + "/execute/";
+
+    	//alert(executeurl);
+		$.ns = {};
+		$("#output").html("<b>Executing " + trigger + "</b></br>");
+		$.get(executeurl, function(data) {
+			$("#output").append("<b>Task ID: " + data.taskid + "</b></br>");
+			$("#output").append("<b>Executing</b>");
+			$.ns.taskid = data.taskid;
+			var a =0;
+			var output = "";
+			var intervalId = setInterval( function() 
+			    {
+			        a = a + 1;
+			      	if (a%5==0){
+			      		$.get('/control/trigger/output/' + $.ns.taskid + "/", function(data) {
+			      			$.ns.output = data;
+			      			if (data.state != "PENDING" &&  data.state != "STARTED"){
+			      				clearInterval(intervalId);
+			      				$("#output").append("</br>");
+								$("#output").append("<b>Task state = " + $.ns.output.state + "</b></br>");
+								$("#output").append("<b>Output = </b></br>");
+								$("#output").append("<pre>" + $.ns.output.result + "</pre></br>");
+			      				};
+			      		});
+			      	if (a==60){
+			      		clearInterval(intervalId);
+			      		$("#output").append("</br><b>Task timeout</b>");
+			      		}
+			      	};
+
+			      	$("#output").append(".");
+			    }, 1000);
+		})
+		.fail(function() { $("#output").append("<b>Error creating task</b>"); });
+    });
+ });</script>
+{% endblock %}

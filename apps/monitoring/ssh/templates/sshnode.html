@@ -1,0 +1,77 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}SSH Node{% endblock %}
+
+{% block extra_script %}
+		<script type="text/javascript" src="/site_media/static/monitoring/js/flot/jquery.js"></script>
+		<script type="text/javascript" src="/site_media/static/monitoring/js/flot/jquery.flot.js"></script>
+		<script type="text/javascript" src="/site_media/static/monitoring/js/flot/jquery.flot.time.js"></script>
+		<script type="text/javascript" src="/site_media/static/monitoring/js/flot/jquery.flot.selection.js"></script>
+		<script type="text/javascript" src="/site_media/static/monitoring/js/functions.js"></script>
+		<script type="text/javascript">
+			{% for counter in counters %}
+				var placeholder{{counter.name}} = $("#{{counter.name}}");
+				var placeholder{{counter.name}}rst = $("#{{counter.name}}rst");
+				var url{{counter.name}} = '/monitoring/ssh/node/{{node.name}}/{{counter.name}}/';
+				var options{{counter.name}} = {
+						xaxis: { mode: "time",timezone: "browser"},
+						selection: {mode: "xy"},
+					};
+				counterGraph(url{{counter.name}},placeholder{{counter.name}},placeholder{{counter.name}}rst,options{{counter.name}});
+		
+			{% endfor %}
+		</script>
+{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+	<style>
+		.menutable {border: 2px solid white;}
+		.menutabletd {background-color:#EEEEEE;border: 2px solid white;width:250px }
+	</style>
+	
+    <h1>Node {{node.name}} on Cluster {{node.cluster.name}}</h1>
+    <table class="menutable">
+        <tr>    
+        	<th>Cluster</th>
+        	<th>Nodes</th>
+            <th>Counters</th>
+        </tr>
+        <tr> 
+            <td  class="menutabletd">
+            <ul>
+				<li><a href="/monitoring/ssh/cluster/{{node.cluster.name}}">{{node.cluster.name}}</a></li>
+			</ul>
+            </td>	
+            <td  class="menutabletd">
+            <ul>
+            	{% for node in node.cluster.nodes.all %}
+				<li><a href="/monitoring/ssh/node/{{node.name}}">{{node.name}}</a></li>
+				{% endfor %}
+			</ul>
+            </td>	
+            <td class="menutabletd">
+            <ul>
+            	{% for counter in counters %}
+				<li><a href="#{{counter.name}}">{{counter.name}}</a></li>
+			{% endfor %}
+			</ul>
+            </td>
+        </tr>
+    </table>
+    <table class="maintable">
+	{% for counter in counters %}
+	        <tr>    
+	            <td align="right">
+	            <h3  name="{{counter.name}}">{{counter.name}}</h3></br>
+	            	<div id="{{counter.name}}" style="width:1024px;height:400px"> </div>
+					<a id="{{counter.name}}rst" href="#">Reset zoom</a>
+	            </td>
+	        </tr>
+	{% endfor %}
+    </table>
+{% endblock %}
+

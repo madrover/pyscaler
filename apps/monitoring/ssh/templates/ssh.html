@@ -1,0 +1,41 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}SSH{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+	<h1>Monitoring</h1>
+
+{% endblock %}
+
+
+{% block body %}
+<h1>SSH</h1>
+	<style>
+		.menutable {border: 2px solid white;}
+		.menutabletd {background-color:#EEEEEE;border: 2px solid white;width:250px }
+	</style>
+
+<table class="menutable">
+<tr><th>Clusters</th><th>Nodes</th></tr>
+{% for cluster in clusters %}
+<tr>
+	<td class="menutabletd">
+		<ul>
+			<li><a href="cluster/{{cluster.name}}">{{cluster.name}}</a></li>
+		</ul>
+	</td>
+	<td class="menutabletd">
+		<ul>
+		{% for node in cluster.nodes.all %}
+			<li><a href="node/{{node.name}}">{{node.name}}</a></li>
+			{% endfor %}
+		</ul>
+	</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}
+{% if localscripts %}
+Local Scripts
+{% endif %}
+{% if distributedscripts %}
+Distributed Scripts
+{% endif %}
+{% endblock %}
+
+
+
+{% block body %}
+<style>
+	.menutable {border: 2px solid white;}
+	.menutabletd {background-color:#EEEEEE;border: 2px solid white; width:250px;padding:10px;}
+</style>
+
+{% if localscripts %}
+<h1>Local Scripts</h1>
+{% endif %}
+{% if distributedscripts %}
+<h1>Distributed Scripts</h1>
+{% endif %}
+
+<form action="">
+<table class="menutable">
+<tr>
+    <th>Cluster</th>
+    <th>Nodes</th>
+	{% if localscripts %}
+	<th>Local Scripts</th>
+	{% endif %}
+	{% if distributedscripts %}
+	<th>Distributed Scripts</th>
+	{% endif %}
+</tr>
+<tr>
+    <td class="menutabletd">
+    	<div id="clusters">
+	    	{% for cluster in clusters %}
+			<input type="radio" name="cluster" value="{{cluster.name}}">{{cluster.name}}<br>
+			{% endfor %}
+		</div>
+   	</td>
+    <td class="menutabletd">
+    	<div id="nodes"></div>
+   	</td>
+     <td class="menutabletd">
+		<div id="scripts">
+			{% if localscripts %}
+				{% for localscript in localscripts %}
+					<input type="radio" name="script" value="{{localscript.name}}">{{localscript.name}}<br>
+				{% endfor %}
+			{% endif %}
+			{% if distributedscripts %}
+				{% for distributedscript in distributedscripts %}
+					<input type="radio" name="script" value="{{distributedscript.name}}">{{distributedscript.name}}<br>
+				{% endfor %}
+			{% endif %}
+		</div>
+   	</td>
+</tr>
+<tr>
+    <th colspan = "3 "> <div style="width:750px;float:left;text-align:left">Actions</div></th>
+</tr>
+<tr>
+    <td colspan = "3 ">
+    	<button id="executescript" >Execute Script</button>
+    </td>
+</tr>
+<tr>
+    <th colspan = "3 "> <div style="width:750px;float:left;text-align:left">Output</div></th>
+</tr>
+<tr>
+    <td colspan = "3"><div id="output"style="background-color:#EEEEEE";height:200px;width:600px;float:left></div></td>
+</tr>
+</table>
+
+</form>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+$(document).ready(function(){
+    // Populate node div
+	$('form').on('click', 'input:radio[name="cluster"]', function(event){
+        $.get('/control/cluster/' + $(this).val() + "/nodelist", function(data) {
+        	nodes="";
+        	for (var i=0; i < data.nodes.length; i++) {
+			 nodes = nodes + '<input type="radio" name="node" value="' + data.nodes[i] +'">' + data.nodes[i] +'<br>'
+			};
+			$("#nodes").html(nodes);
+       	});	
+    });
+    $('form').on('click', '#executescript', function(event){
+    	//Preventing button default action to be executed
+    	event.preventDefault();
+    	//Erasing output div counter
+    	$('#output').html("");
+		//Getting cluster value
+    	var cluster = 	$('input:radio[name=cluster]:checked').val();
+    	// Checking if cluster is marked
+    	if (typeof cluster === "undefined") {
+    		$('#output').append("<b>Cluster not chosen</b>");
+    		return;
+    	}	
+    	//Getting script value
+    	var script = 	$('input:radio[name=script]:checked').val();
+    	// Checking if script is marked
+    	if (typeof script === "undefined") {
+    		$('#output').append("<b>Script not chosen</b>");
+    		return;
+    	}
+    	
+    	//Getting node value, may be undefined
+    	var node = 	$('input:radio[name=node]:checked').val();
+		if (typeof node === "undefined") {
+			var executeurl = "/actions/executescript/" + script + "/cluster/" + cluster;
+		}else{
+			var executeurl = "/actions/executescript/" + script + "/cluster/" + cluster + "/node/" + node;
+		}
+    	//alert(executeurl);
+		$.ns = {};
+		$("#output").html("<b>Executing " + script + "</b></br>");
+		$.get(executeurl, function(data) {
+			$("#output").append("<b>Task ID: " + data.taskid + "</b></br>");
+			$("#output").append("<b>Executing</b>");
+			$.ns.taskid = data.taskid;
+			var a =0;
+			var output = "";
+			var intervalId = setInterval( function() 
+			    {
+			        a = a + 1;
+			      	if (a%5==0){
+			      		$.get('/actions/executescript/output/' + $.ns.taskid + "/", function(data) {
+			      			$.ns.output = data;
+			      			if (data.state != "PENDING" &&  data.state != "STARTED"){
+			      				clearInterval(intervalId);
+			      				$("#output").append("</br>");
+								$("#output").append("<b>Task state = " + $.ns.output.state + "</b></br>");
+								$("#output").append("<b>Output = </b></br>");
+								$("#output").append("<pre>" + $.ns.output.result + "</pre></br>");
+			      				};
+			      		});
+			      	if (a==60){
+			      		clearInterval(intervalId);
+			      		$("#output").append("</br><b>Task timeout</b>");
+			      		}
+			      	};
+
+			      	$("#output").append(".");
+			    }, 1000);
+		})
+		.fail(function() { $("#output").append("<b>Error creating task</b>"); });
+    });
+ });</script>
+{% endblock %}
