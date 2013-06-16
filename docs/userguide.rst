@@ -65,7 +65,7 @@ Can be accessed through the menu **Monitoring -> Ssh -> Node**
 .. image:: images/pyscalerSSHNode.png
 
 Control
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 - Execution of Distributed Scripts
 
@@ -83,9 +83,10 @@ Can be accessed through the menu **Control-> Local Scripts**
 
 
 Provisioning
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
-- EC2 nodes provisioning
+EC2 nodes provisioning
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Can be accessed through the menu **Provisioning -> Ec2 Nodes**
 
@@ -93,8 +94,8 @@ Can be accessed through the menu **Provisioning -> Ec2 Nodes**
 
 ----
 
-- Operating system configuration
-
+Operating system configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 Can be accessed through the menu **Provisioning -> OS configurations**
 
 .. image:: images/pyscalerOSConfiguration.png
@@ -102,7 +103,7 @@ Can be accessed through the menu **Provisioning -> OS configurations**
 ----
 
 Administration
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 All these screens can be accessed through the menu **Administration**
 
 - Cluster administration
