@@ -11,7 +11,7 @@ Concepts
   on a JVM or an operating system script to be executed via SSH. It has 
   got a Threshold field.
 
-.. figure:: images/Data-Model.png
+.. figure:: images/Cluster-Node-Counter.png
    :align: center
    :alt: 
 
@@ -477,7 +477,7 @@ The following models contains the configuration information of PyScaler
 Configuration data models
 ---------------------------------------------------------
 
-.. figure:: images/Cluster-Node-Counter.png
+.. figure:: images/Data-Model.png
    :align: center
    :alt: 
 

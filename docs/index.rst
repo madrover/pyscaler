@@ -5,7 +5,7 @@ Welcome to PyScaler's documentation!
    :maxdepth: 2
    :numbered: 
    
-   introduction
+   project
    features
    usecases
    design

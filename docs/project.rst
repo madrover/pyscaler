@@ -1,4 +1,4 @@
-Project
+PyScaler Project
 =======
 
 Introduction
@@ -262,6 +262,7 @@ The following image is the project’s Gannt diagram.
 .. figure:: images/gantt.png
    :align: center
    :alt: 
+   :scale: 75 %
 
 Economic evaluation
 ------------------------ 
