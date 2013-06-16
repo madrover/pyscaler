@@ -470,39 +470,25 @@ contains the essential fields and behaviors of the data you’re storing.
 Generally, each model maps to a single database table. Each module has
 got different models that are interconnected between them.
 
-The following models contains the configuration information of PyScaler
-
-----------------------------------------------
-
 Configuration data models
 ---------------------------------------------------------
+
+The following models contains the configuration information of PyScaler
+
 
 .. figure:: images/Data-Model.png
    :align: center
    :alt: 
 
-New Virtual Machine deployment steps
-
-ActionSet has configuration
-
-baseNodeName, will increment
-
-baseJVMName, will increment
-
-JVMNumber, will increment
+New Node deployment steps
+-----------------------------------
+This sections describes the steps needed to deploy 
 
 - Deploy a new VM on EC2 (clustername,user, )
-
-        - Add Node to Cluster (namefromcluster)
-
+- Add Node to Cluster (namefromcluster)
 - Apply OS configuration with Puppet
-
 - Add SSH to Node
-
 - Add JVM to Node
-
 - Deploy last app version with Fabric
-
 - Configure Apache with Fabric
-
 - Configure elastic load balancer
