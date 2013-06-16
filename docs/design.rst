@@ -1,37 +1,42 @@
 Design
 ========
+
 Concepts
-----------------------------------------------------------
+-----------
 
-#. Node Virtual machines running applications
-#. Cluster Group of Nodes executing the same applications and work
+- **Node** Virtual machines running applications
+- **Cluster** Group of Nodes executing the same applications and work
    together
-#. Target Node component to be monitored. It can be a JVM or SSH host
-   and has a defined Threshold.
+- **Counter** Performance counter to be gathered. It can be a JMX counter
+  on a JVM or an operating system script to be executed via SSH. It has 
+  got a Threshold field.
 
-.. figure:: images/models.png
+.. figure:: images/Data-Model.png
    :align: center
    :alt: 
 
-#. Counter Performance counter to be gathered. It can be a JMX counter
-   on a JVM or an operating system script to be executed via SSH
-#. Trigger Group of Counters associated to a Cluster. It will trigger
-   some an ActionSet when the Counter Threshold of all associated
-   Counters are reached during a specific amount of minutes.
-#. ActionSet Group of Actions that can be triggered by a Trigger and are
-   executed in a specific order.
-#. Action Actions needed to deploy a new Node onto a Cluster. The
-   following actions are available:
+- **Trigger** Group of Counters associated to a Cluster. It has got a Timing 
+  field and a list of associated and ordered Actions. When any of the associated
+  Counters reaches its threshold during the number of minutes defined in the
+  Timing field it will execute the associated Actions
 
-#. Email Send an email
-#. Ec2VMDeploy Deploy a new VM on EC2
-#. Puppet Enforce an operating system configuration via Puppet
-#. ApplicationConfiguration Execute a set of commands on the remote
-   hosts via Fabric
+- **Action** Actions that can be executed against Nodes or Clusters. They can be
+  for management tasks or to deploy new Nodes if needed. The following actions 
+  are available:
 
+ - **DeployEc2Node** Deploy a new virtual machine on EC2 and create a new Node
+ - **DistributedScript** Execute a Fabric script
+ - **Email** Send an email
+ - **LocalScript** Execute a local command in the target (i.e. shell script)
+ - **RemoveEc2Node** Stops a virtual machine on EC2 and removes its associated Node
+ - **OSConfiguration** Enforce an operating system configuration via Puppet
 
 PyScaler main components
 ---------------------------
+
+.. figure:: images/Components.png
+   :align: center
+   :alt: 
 
 Django
 ~~~~~~~~
@@ -141,9 +146,9 @@ PyScaler project
 
 The top-level folder contains:
 
-+-- apps Folder containing the Django apps
-+-- docs Folder containing documentation in reStructuredText format
-+-- fixtures Folder containing json files with the initial database data
++-- apps Folder containing the Django apps  
++-- docs Folder containing documentation in reStructuredText format  
++-- fixtures Folder containing json files with the initial database data  
 +-- logs Folder containing Django logs
 +-- manage.py Script used to manage the Django site.
 +-- pyscaler Folder containing the Django project
@@ -178,7 +183,7 @@ performance counters to filesystem log and to the shared cache
 
 This app is defined in the django app apps.monitoring
 
-VIEWS
+Views
 ^^^^^^^^^^^^^^^
 
 These are the views and urls provided by the apps.monitoring app
@@ -200,7 +205,7 @@ This view shows aggregate graphs for the available performance counters
 in a specific node. It takes last element of the URL as the requested
 node name.
 
-TASKS
+Tasks
 ^^^^^^^^^^^^^^^
 
 These are the Celery tasks provided by the apps.monitoring app
@@ -218,7 +223,7 @@ This app is used to connect to JVM instances with JMX enabled and
 collect performance data. This app is defined in the django
 package apps.monitoring.jmx
 
-TASKS
+Tasks
 ~~~~~~~~~
 
 #. getJvmTriggerValues(jvm,trigger)
@@ -226,7 +231,7 @@ TASKS
 This tasks connects to the specified JVM and collects all the JMX
 counters defined in the trigger.
 
-VIEWS
+Views
 ~~~~~~~~~
 
 #. http://pyscaler/monitoring/jmx/
@@ -272,7 +277,7 @@ specific JVMs in JSON format. It takes last element of the URL as the
 requested counter name, the previous element as the requested JVM name
 and the previous as the requested node name.
 
-LIBRARIES
+Libraries
 ~~~~~~~~~
 
 #. Jpype `http://jpype.sourceforge.net/ <http://jpype.sourceforge.net/>`_
@@ -290,7 +295,7 @@ output of this script must be an integer value that represents a
 performance counter. This app is defined in the django
 package apps.monitoring.ssh
 
-TASKS
+Tasks
 ~~~~~~~~~
 
 2. getSshTriggerValues(ssh,trigger)
@@ -298,7 +303,7 @@ TASKS
 This tasks connects to the specified ssh node and executes the scripts
 defined in the trigger. It stores the output data in Memcache.
 
-VIEWS
+Views
 ~~~~~~~~~
 
 6. http://pyscaler/monitoring/ssh/
@@ -330,7 +335,7 @@ This view returns the last 24h values of a specific counter in a node in
 JSON format. It takes last element of the URL as the requested counter
 name and the previous element as the requested node name.
 
-LIBRARIES
+Libraries
 ~~~~~~~~~
 
 2. Paramiko `https://github.com/paramiko/paramiko <https://github.com/paramiko/paramiko>`_
@@ -354,7 +359,7 @@ following roles:
 
 This module is defined in the django app apps.control
 
-TASKS
+Tasks
 ~~~~~~~~~
 
 3. launchTriggers()
@@ -369,7 +374,7 @@ Analyzes the performance data in the backend and triggers the ActionSets
 defined in the Triggerss if the associated counters hit their Thresholds
 during a specified amount of time.
 
-VIEWS
+Views
 ~~~~~~~~~
 
 9. http://pyscaler/control/
@@ -394,7 +399,7 @@ returns a Celery Task ID
 4. http://pyscaler/control/execute/output/<TASKID>
 
 
-TASKS
+Tasks
 ~~~~~~~~~
 
 10. email
@@ -408,7 +413,7 @@ Actions module
 This module is used to deploy new nodes to a cluster. It interacts with
 the virtual machine provider and deploys new servers.
 
-TASKS
+Tasks
 ~~~~~~~~~
 
 11. OperatingSystemConfiguration()
@@ -425,7 +430,7 @@ It implements and Action that deploys a new VM to EC2
 It implements and Action that executes a Fabric fabfile against a
 specific Node
 
-LIBRARIES
+Libraries
 ~~~~~~~~~
 
 #. Boto A Python package that provides interfaces to Amazon Web
@@ -472,7 +477,7 @@ The following models contains the configuration information of PyScaler
 Configuration data models
 ---------------------------------------------------------
 
-.. figure:: images/cluster-node-target.png
+.. figure:: images/Cluster-Node-Counter.png
    :align: center
    :alt: 
 

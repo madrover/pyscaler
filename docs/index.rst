@@ -6,14 +6,16 @@
 Welcome to PyScaler's documentation!
 ====================================
 
-Contents:
-
 .. toctree::
-   :maxdepth: 3   
+   :maxdepth: 3
+   :numbered: 
    
    introduction
+   features
+   design
    installation
    userguide
+   highavailability
    modules 
    
    
