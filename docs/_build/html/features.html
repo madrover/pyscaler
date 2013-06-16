@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Features &mdash; PyScaler 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyScaler 1.0 documentation" href="index.html" />
+    <link rel="next" title="3. Design" href="design.html" />
+    <link rel="prev" title="1. Project" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="design.html" title="3. Design"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Project"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="features">
+<h1>2. Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Monitoring</strong></dt>
+<dd><p class="first last">PyScaler is able to monitor remote hosts and store the performance
+data for further analysis and business logic.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>SSH monitoring</strong></p>
+<p>PyScaler can connect to remote hosts via SSH, execute scripts to gather
+performance data and index its output.</p>
+</li>
+<li><p class="first"><strong>JMX monitoring</strong></p>
+<p>PyScaler can connect to remote JVMs via JMX and gather performance data
+via the exposed mbeans.</p>
+</li>
+<li><p class="first"><strong>Counter graphs</strong></p>
+<p>The performance data can be easily visualized using available graphs.
+There are different graphs per monitored target and counters.</p>
+</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Control</strong></dt>
+<dd><p class="first last">PySCaler can be execute actions against its managed nodes. These action
+can be execute manually or triggered automatically when defined
+performance thresholds are hit.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>Remote command execution</strong></p>
+<p>It can execute command locally on specific nodes or on all the nodes
+from a cluster.</p>
+</li>
+<li><p class="first"><strong>Fabric scripts execution</strong></p>
+<p>It can execute Fabric scripts that can be used to execute local or
+remote shell commands (normally or via sudo) and uploading/downloading
+files, as well as auxiliary functionality such as prompting the
+running user for input, or aborting execution.</p>
+</li>
+<li><p class="first"><strong>Triggers</strong></p>
+<p>PyScaler can analyze available performance data and automatically trigger
+defined actions when a performance threshold is reached during a certain
+amount of time.</p>
+</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Provisioning</strong></dt>
+<dd><p class="first last">PyScaler can be used to provision new servers.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>EC2 node deployment</strong></p>
+<p>PyScaler can launch new Amazon EC2 instances with defined parameters.</p>
+</li>
+<li><p class="first"><strong>Operating system configuration</strong></p>
+<p>PyScaler can provision nodes using Puppet.</p>
+</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p class="first"><strong>Deployment scaling</strong></p>
+<p>The previously explained features (monitoring, control and provisioning)
+can be used together to automatically scale a cloud based cluster.
+PyScaler will monitor the cluster and when a defined performance threshold
+is reached then the necessary actions to deploy a new cluster node will
+be executed, thus scaling it.</p>
+</li>
+<li><p class="first"><strong>High availability</strong></p>
+<p>Each component of PyScaler is designed to be highly available.</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">1. Project</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="design.html"
+                        title="next chapter">3. Design</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/features.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="design.html" title="3. Design"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Project"
+             >previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Miquel Adrover.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

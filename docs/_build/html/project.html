@@ -1,0 +1,549 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. PyScaler Project &mdash; PyScaler 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyScaler 1.0 documentation" href="index.html" />
+    <link rel="next" title="2. Features" href="features.html" />
+    <link rel="prev" title="Welcome to PyScaler’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="features.html" title="2. Features"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to PyScaler’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pyscaler-project">
+<h1>1. PyScaler Project<a class="headerlink" href="#pyscaler-project" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>1.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>In the last few years we have seen a new computing area that is becoming
+increasingly relevant in today’s IT ecosystem. This area is called the
+Cloud.</p>
+<p>Cloud technologies are a new paradigm of computing that totally changes
+the way we have been thinking about computers. <a class="reference external" href="http://en.wikipedia.org/wiki/John_Gage">John
+Gage</a>’s 1984 prophetic
+phrase “The network is the computer“&nbsp;is now becoming more real than
+ever. In fact, we can hack it an actualize it to a more contemporary
+version. Now, the cloud is the computer.&nbsp;And with such a gigantic step
+on how we deal with computers it is inevitable to be interested in.</p>
+<p>Cloud technologies can come in many forms. However we can classify the
+main types of cloud services as:</p>
+<ol class="arabic simple">
+<li><strong>Infrastructure as a service (IaaS)</strong> Where the provider offers dynamic
+access to computers, typically virtual machines, and other related
+resources such as storage, messaging, etc... This is the lower level
+form of cloud services. An example of IaaS is <a class="reference external" href="http://aws.amazon.com/ec2/">Amazon
+EC2</a>.</li>
+<li><strong>Platform as a service (PaaS)</strong> Where the provider offers a higher level
+platform typically including an operating system, a programming
+language execution environment, a database, and a web server. An
+example of PaaS is <a class="reference external" href="https://developers.google.com/appengine/">Google App
+Engine.</a></li>
+<li><strong>Software as a service (SaaS)</strong> Where the provider offers application
+level software. Whereas IaaS and PaaS services are low level services
+addressed to be building block to construct other services, SaaS
+services are usually addressed to be used directly by final users. An
+example of SaaS is <a class="reference external" href="http://www.salesforce.com">Salesforce</a>.</li>
+</ol>
+<p>This service classification is done from lower to higher level. In fact,
+higher level services are often built using lower level services.
+However, all these implementations share a common set of technologies
+and procedures.</p>
+<p>Cloud technologies are heavily based on virtualization and <a class="reference external" href="http://en.wikipedia.org/wiki/Autonomic_computing">autonomic
+computing</a>. With the
+help of them the cloud infrastructures can leverage existing commodity
+hardware, lower costs and ease its usage. This way, the entrance
+barriers to create new projects are lower than ever.</p>
+<p>In this project we will focus both in virtualization and autonomic
+computing as we want to use the IaaS services capabilities to automate
+the behavior of an IT deployment. We want to create a system that is
+able to enlarge or reduce a cluster based on certain performance events.</p>
+</div>
+<div class="section" id="motivation">
+<h2>1.2. Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>During my latest career years I have been involved in many projects
+related to J2EE and web technologies. I have been specializing in
+systems administration with a special love for high availability and
+performance matters. With the raise of the cloud technologies I have
+been interested in how joining the J2EE and cloud stacks can provide
+flexible, performant and reliable environments.</p>
+<p>Until now when you had to provision an environment you had to keep in
+mind the maximum number of concurrent users and then do an appropriate
+hardware sizing that is able to handle the load. Besides that, there
+were other concerns as the high availability matters.</p>
+<p>Finally, what usually happens is that you end up with some very big
+computers that have costed a lot of money and are often underused. This
+approach is inflexible and expensive.</p>
+<p>It can happen that your application has got utilization peaks that
+happen a few times a week but you don’t know when. In pre cloud
+deployments you would be tied to have servers big enough to handle the
+utilization peaks but that would be mostly underused.</p>
+<p>One of the big points of the cloud service providers is the pay as you
+go schema. This feature together with the ability to start and stop
+servers on demand can help you reduce the deployment costs thus enabling
+the environment to automatically respond to the user load behavior.</p>
+</div>
+<div class="section" id="project-description">
+<h2>1.3. Project description<a class="headerlink" href="#project-description" title="Permalink to this headline">¶</a></h2>
+<p>This project aims to create a system that is able to horizontally scale
+a J2EE based environment when certain OS or JVM thresholds are reached.</p>
+<p>To achieve this goal we will build a service that is able to gather
+performance statistics of a number of machines and execute actions when
+certain events are reached. The events are can be performance thresholds
+or system events. The actions are the steps needed to provision a new
+cluster node and integrate it into the cluster.</p>
+<p>There are different components that must be created:</p>
+<ul class="simple">
+<li>A remote performance monitor</li>
+<li>A performance counters analyzer that is able to apply some business logic</li>
+<li>A module to automate the deployment of a new virtual machines</li>
+<li>A module that is able to provision the virtual machine</li>
+<li>A module that is able to integrate the virtual machine in an existing cluster</li>
+</ul>
+</div>
+<div class="section" id="objectives">
+<h2>1.4. Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h2>
+<p>The objectives that we are trying to achieve with this project are:</p>
+<ul class="simple">
+<li>Create a tool that is able to enhance scalability capabilities of a cloud
+based J2EE environment.</li>
+<li>The tool itself must be deployable on a cloud environment and have high
+availability and scalability features.</li>
+<li>Gain knowledge on cloud architectures</li>
+<li>Learn how to use an IaaS provider and its API</li>
+<li>Use provisioning tools to automate the &nbsp;deployment of a cluster</li>
+<li>Understand the performance metrics of a J2EE server</li>
+<li>Be able to create a business logic that is able to analyze events over time</li>
+<li>Although the tool is aimed to analyze J2EE performance metric and make use
+of one specific IaaS provider it should be designed to easily deploy
+new performance counter sources and IaaS providers</li>
+</ul>
+</div>
+<div class="section" id="risk-analysis">
+<h2>1.5. Risk analysis<a class="headerlink" href="#risk-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The main risks associated with the project are the following. We
+provide, as well, an associated action designed to avoid them or, if
+they do not achieve it, alleviate it.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="11%" />
+<col width="7%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">RISK</th>
+<th class="head">PROBABILITY</th>
+<th class="head">IMPACT</th>
+<th class="head">ACTION</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Too many technologies and components
+to manage and integrate.</td>
+<td>High</td>
+<td>High</td>
+<td><ul class="first last simple">
+<li>Design the environment as simple as possible.</li>
+<li>Focus on a single IaaS environment.</li>
+<li>Focus on a simple J2EE server and application to deploy</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>As the application will be used in a
+public cloud provider with costs
+associated to the server time usage</td>
+<td>High</td>
+<td>Medium</td>
+<td>Develop when possible with local servers and the use paid
+services only to test when needed</td>
+</tr>
+<tr class="row-even"><td>The complexity of the project and the
+tight schedule</td>
+<td>High</td>
+<td>High</td>
+<td>Define a realist project schedule and try to follow it as
+strictly as possible</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="scope">
+<h2>1.6. Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h2>
+<p>Although the service is aimed to be open, modular and expandable due to
+time constraint we need to focus on certain premises.</p>
+<ul class="simple">
+<li>Integration with only one IaaS service</li>
+<li>Scale one J2EE container</li>
+<li>Scale one J2EE application</li>
+<li>Scale one web server frontend</li>
+</ul>
+</div>
+<div class="section" id="planning">
+<h2>1.7. Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h2>
+<p>The project has got the following organization.</p>
+<div class="section" id="activities">
+<h3>1.7.1. Activities<a class="headerlink" href="#activities" title="Permalink to this headline">¶</a></h3>
+<p>The project is divided in the following activities:</p>
+<ul class="simple">
+<li><strong>Analysis</strong></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Design</strong> Design the solution</li>
+<li><strong>Proof Of Concept</strong> Create an initial POC to ensure the proposed solution is valid</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><strong>Development</strong></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Monitoring module</strong> Create the module that monitors the environment to be scaled</li>
+<li><strong>Control module</strong> Create the module that handles the application business logic</li>
+<li><strong>Action module</strong> Create the module that triggers the scalation</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><strong>Deployment</strong></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Virtual machine deployment</strong> Automate the deployment of new computers</li>
+<li><strong>J2EE Application provisioning</strong> Automate the J2EE application cluster deployment</li>
+<li><strong>Web server integration</strong> Automate the clustered web server configuration</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><strong>Testing</strong> Quality assurance</li>
+<li><strong>Documentation</strong> Document the project</li>
+</ul>
+</div>
+<div class="section" id="human-resources">
+<h3>1.7.2. Human resources<a class="headerlink" href="#human-resources" title="Permalink to this headline">¶</a></h3>
+<p>The following profiles are needed to achieve this project</p>
+<ol class="arabic simple">
+<li>Analyst. Defining and documenting the project</li>
+<li>Developer. Develop the server</li>
+<li>Systems Administrator. Integrate the server with the existing IaaS
+provider and provision the application to be scaled</li>
+<li>Test Engineer&nbsp;Perform the quality assurance and testing processes to
+ensure the correct behavior of the service</li>
+</ol>
+</div>
+<div class="section" id="it-resources">
+<h3>1.7.3. IT Resources<a class="headerlink" href="#it-resources" title="Permalink to this headline">¶</a></h3>
+<p>The project will be mostly developed on local development computer.
+However, to truly test the service we will use an online IaaS provider
+(Amazon AWS).</p>
+</div>
+<div class="section" id="effort-estimation">
+<h3>1.7.4. Effort estimation<a class="headerlink" href="#effort-estimation" title="Permalink to this headline">¶</a></h3>
+<p>The project timings are tied to the UOC semester timings and
+constraints. Because of that, we try to align the beginning and end to
+the academic course. We assume working from Monday to Friday and
+skipping the public holidays.</p>
+<p>The following table contains the project calendar and assigned resource
+per activity.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="14%" />
+<col width="16%" />
+<col width="7%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TASKS</th>
+<th class="head">INIT DATE</th>
+<th class="head">END DATE</th>
+<th class="head">DAYS</th>
+<th class="head">RESOURCE</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Analysis</strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Design</td>
+<td>14/03/2013</td>
+<td>27/03/2013</td>
+<td>10</td>
+<td>Analyst</td>
+</tr>
+<tr class="row-even"><td>Proof of concept</td>
+<td>2/04/2013</td>
+<td>15/04/2013</td>
+<td>10</td>
+<td>Developer</td>
+</tr>
+<tr class="row-odd"><td><strong>Development</strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Monitoring module</td>
+<td>16/04/2013</td>
+<td>29/05/2013</td>
+<td>10</td>
+<td>Developer</td>
+</tr>
+<tr class="row-odd"><td>Control module</td>
+<td>30/04/2013</td>
+<td>14/05/2013</td>
+<td>10</td>
+<td>Developer</td>
+</tr>
+<tr class="row-even"><td>Actions module</td>
+<td>15/05/2013</td>
+<td>21/05/2013</td>
+<td>5</td>
+<td>Developer</td>
+</tr>
+<tr class="row-odd"><td><strong>Integration</strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Virtual machine deployment</td>
+<td>22/05/2013</td>
+<td>27/05/2013</td>
+<td>3</td>
+<td>Systems Administrator</td>
+</tr>
+<tr class="row-odd"><td>J2EE application deployment</td>
+<td>28/05/2013</td>
+<td>30/05/2013</td>
+<td>3</td>
+<td>Systems Administrator</td>
+</tr>
+<tr class="row-even"><td>Web server Integration</td>
+<td>31/05/2013</td>
+<td>31/05/2013</td>
+<td>2</td>
+<td>Systems Administrator</td>
+</tr>
+<tr class="row-odd"><td><strong>Testing</strong></td>
+<td>3/06/2013</td>
+<td>14/06/2013</td>
+<td>10</td>
+<td>Test Engineer</td>
+</tr>
+<tr class="row-even"><td><strong>Documentation</strong></td>
+<td>17/06/2013</td>
+<td>21/06/2013</td>
+<td>5</td>
+<td>Analyst</td>
+</tr>
+</tbody>
+</table>
+<p>The TFC subject has got 7,5 credits and each credit should have around
+25 hours of dedication (25x7,5 = 187,5). Based in that calculation we
+have defined the following daily effort.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="71%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TOTAL TIME</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Days</td>
+<td>68</td>
+</tr>
+<tr class="row-odd"><td>Hours/day</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>Hours</td>
+<td>204</td>
+</tr>
+</tbody>
+</table>
+<p>The following image is the project’s Gannt diagram.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/gantt.png"><img alt="" src="_images/gantt.png" style="width: 179.5px; height: 563.5px;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="economic-evaluation">
+<h2>1.8. Economic evaluation<a class="headerlink" href="#economic-evaluation" title="Permalink to this headline">¶</a></h2>
+<p>There are two type of costs associated with the the project, human and
+computing resources.</p>
+<p>The human resources costs are based detailed in the following table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="18%" />
+<col width="22%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">COSTS</th>
+<th class="head">HOURS</th>
+<th class="head">RATE/HOUR</th>
+<th class="head">COST</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Analyst</td>
+<td>45</td>
+<td>50€</td>
+<td>2250€</td>
+</tr>
+<tr class="row-odd"><td>Developer</td>
+<td>105</td>
+<td>30€</td>
+<td>3150€</td>
+</tr>
+<tr class="row-even"><td>Systems Administrator</td>
+<td>24</td>
+<td>35€</td>
+<td>840€</td>
+</tr>
+<tr class="row-odd"><td>Test Engineer</td>
+<td>30</td>
+<td>30€</td>
+<td>900€</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><strong>TOTAL</strong></td>
+<td>7140€</td>
+</tr>
+</tbody>
+</table>
+<p>The initial computing resources are already in place as we own the
+development computer.</p>
+<p>To test the service on a cloud environment we need to contract the
+services of an IaaS provider. However, we will use the Amazon AWS Free
+Usage Tier so it should be free while developing the project.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. PyScaler Project</a><ul>
+<li><a class="reference internal" href="#introduction">1.1. Introduction</a></li>
+<li><a class="reference internal" href="#motivation">1.2. Motivation</a></li>
+<li><a class="reference internal" href="#project-description">1.3. Project description</a></li>
+<li><a class="reference internal" href="#objectives">1.4. Objectives</a></li>
+<li><a class="reference internal" href="#risk-analysis">1.5. Risk analysis</a></li>
+<li><a class="reference internal" href="#scope">1.6. Scope</a></li>
+<li><a class="reference internal" href="#planning">1.7. Planning</a><ul>
+<li><a class="reference internal" href="#activities">1.7.1. Activities</a></li>
+<li><a class="reference internal" href="#human-resources">1.7.2. Human resources</a></li>
+<li><a class="reference internal" href="#it-resources">1.7.3. IT Resources</a></li>
+<li><a class="reference internal" href="#effort-estimation">1.7.4. Effort estimation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#economic-evaluation">1.8. Economic evaluation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to PyScaler&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="features.html"
+                        title="next chapter">2. Features</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/project.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="features.html" title="2. Features"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to PyScaler’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Miquel Adrover.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

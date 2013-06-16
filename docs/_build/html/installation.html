@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. Installation steps &mdash; PyScaler 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyScaler 1.0 documentation" href="index.html" />
+    <link rel="next" title="6. User Guide" href="userguide.html" />
+    <link rel="prev" title="4. Design" href="design.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="userguide.html" title="6. User Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="design.html" title="4. Design"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-steps">
+<h1>5. Installation steps<a class="headerlink" href="#installation-steps" title="Permalink to this headline">¶</a></h1>
+<p>The following steps describe  the installation of PyScaler on a Centos 6 box.</p>
+<ul>
+<li><p class="first">Install EPEL repository</p>
+<blockquote>
+<div><p>rpm -Uvh <a class="reference external" href="http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm">http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm</a></p>
+</div></blockquote>
+</li>
+<li><p class="first">Install required packages</p>
+<blockquote>
+<div><p>yum install httpd mod_wsgi tomcat6-webapps tomcat6 python-pip librabbitmq rabbitmq-server.noarch make gcc gcc-c++ java-1.6.0-openjdk-devel java-1.6.0-openjdk git sqlite</p>
+</div></blockquote>
+</li>
+<li><p class="first">Install the virtualenv packages to ease the python libraries management</p>
+<blockquote>
+<div><p>pip-python install virtualenv
+pip-python install virtualenvwrapper</p>
+</div></blockquote>
+</li>
+<li><p class="first">Create a new virtualenv</p>
+<blockquote>
+<div><p>mkvirtualenv pyscaler</p>
+</div></blockquote>
+</li>
+<li><p class="first">Create the pyscaler folder</p>
+<blockquote>
+<div><p>mkdir -p /opt/django/pyscaler</p>
+</div></blockquote>
+</li>
+<li><p class="first">Grab the latest PyScaler version from github</p>
+<blockquote>
+<div><p>cd /opt/django/pyscaler
+git clone <a class="reference external" href="https://www.github.com/madrover/pyscaler.git">https://www.github.com/madrover/pyscaler.git</a></p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="design.html"
+                        title="previous chapter">4. Design</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="userguide.html"
+                        title="next chapter">6. User Guide</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/installation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="userguide.html" title="6. User Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="design.html" title="4. Design"
+             >previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Miquel Adrover.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

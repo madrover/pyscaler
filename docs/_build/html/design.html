@@ -1,0 +1,637 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Design &mdash; PyScaler 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyScaler 1.0 documentation" href="index.html" />
+    <link rel="next" title="5. Installation steps" href="installation.html" />
+    <link rel="prev" title="3. Use Cases" href="usecases.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="5. Installation steps"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="usecases.html" title="3. Use Cases"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="design">
+<h1>4. Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="concepts">
+<h2>4.1. Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><strong>Node</strong> Virtual machines running applications</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Cluster</strong> Group of Nodes executing the same applications and work</dt>
+<dd><p class="first last">together</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Counter</strong> Performance counter to be gathered. It can be a JMX counter
+on a JVM or an operating system script to be executed via SSH. It has
+got a Threshold field.</p>
+</li>
+</ul>
+<div class="figure align-center">
+<img alt="" src="_images/Cluster-Node-Counter.png" />
+</div>
+<ul class="simple">
+<li><strong>Trigger</strong> Group of Counters associated to a Cluster. It has got a Timing
+field and a list of associated and ordered Actions. When any of the associated
+Counters reaches its threshold during the number of minutes defined in the
+Timing field it will execute the associated Actions</li>
+<li><strong>Action</strong> Actions that can be executed against Nodes or Clusters. They can be
+for management tasks or to deploy new Nodes if needed. The following actions
+are available:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><strong>DeployEc2Node</strong> Deploy a new virtual machine on EC2 and create a new Node</li>
+<li><strong>DistributedScript</strong> Execute a Fabric script</li>
+<li><strong>Email</strong> Send an email</li>
+<li><strong>LocalScript</strong> Execute a local command in the target (i.e. shell script)</li>
+<li><strong>RemoveEc2Node</strong> Stops a virtual machine on EC2 and removes its associated Node</li>
+<li><strong>OSConfiguration</strong> Enforce an operating system configuration via Puppet</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="pyscaler-main-components">
+<h2>4.2. PyScaler main components<a class="headerlink" href="#pyscaler-main-components" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<img alt="" src="_images/Components.png" />
+</div>
+<div class="section" id="django">
+<h3>4.2.1. Django<a class="headerlink" href="#django" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.djangoproject.com/">https://www.djangoproject.com/</a></p>
+<p>PyScaler is essentially a python web application based on the Django
+framework.</p>
+<p>The core Django
+<a class="reference external" href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>&nbsp;framework
+consists of an <a class="reference external" href="http://en.wikipedia.org/wiki/Object-relational_mapping">object-relational
+mapper</a>&nbsp;which
+mediates between <a class="reference external" href="http://en.wikipedia.org/wiki/Data_modeling">data
+models</a>&nbsp;(defined as Python
+classes) and a <a class="reference external" href="http://en.wikipedia.org/wiki/Relational_database">relational
+database</a>&nbsp;(&#8220;Model&#8221;);
+a system for processing requests with a <a class="reference external" href="http://en.wikipedia.org/wiki/Web_template_system">web templating
+system</a>&nbsp;(&#8220;View&#8221;) and
+a
+<a class="reference external" href="http://en.wikipedia.org/wiki/Regular_expression">regular-expression</a>-based
+<a class="reference external" href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator">URL</a>&nbsp;dispatcher
+(&#8220;Controller&#8221;).</p>
+<p>Django applications are structured in project and apps. A Django project
+is a collection of settings for an instance of Django, including
+database configuration, Django-specific options and application-specific
+settings. A Django app is a bundle of Django code, including models and
+views, that lives together in a single Python package and represents a
+full Django application.</p>
+<p>Django provides a Object-relational Mapping (ORM, O/RM, and O/R mapping)
+layer that provides an abstraction layer to the underlying database
+backend. Instead of defining database tables, indexes, relationships,
+etc..., you define Django models that represent the application data
+layout. Django ORM supports many different database backends as SQLite,
+MySql, etc...</p>
+</div>
+<div class="section" id="celery">
+<h3>4.2.2. Celery<a class="headerlink" href="#celery" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://www.celeryproject.org/">http://www.celeryproject.org/</a></p>
+<p>Celery is an asynchronous task queue/job queue based on distributed
+message passing. It is focused on real-time operation, but supports
+scheduling as well.</p>
+<p>Some common Celery use cases:</p>
+<ol class="arabic simple">
+<li>Running something in the background. For example, to finish the web
+request as soon as possible, then update the users page
+incrementally.</li>
+<li>Running something after the web request has finished.</li>
+<li>Making sure something is done, by executing it asynchronously and
+using retries.</li>
+<li>Scheduling periodic work.</li>
+</ol>
+<p>As Django is a web application it just executes code when an url is
+called. As PyScaler needs to execute code on a scheduled basis
+(performance data collecting, etc...), it relies on Celery scheduling
+capabilities to automate the code execution.</p>
+<p>PyScaler can invoke lengthy operations such as virtual machine
+deployments, etc... Being PyScaler a web application it is supposed to
+be responsive and it can not wait a for this lengthy operations to be
+finished. PyScaler overcome this situation by packaging these lengthy
+tasks into asynchronous celery task that are executed in the background.</p>
+</div>
+<div class="section" id="sqlite">
+<h3>4.2.3. SQLite<a class="headerlink" href="#sqlite" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://www.sqlite.org/">http://www.sqlite.org/</a></p>
+<p>SQLite is a self-contained, serverless, zero-configuration,
+transactional SQL database engine.</p>
+<p>Using the</p>
+</div>
+<div class="section" id="memcached">
+<h3>4.2.4. Memcached<a class="headerlink" href="#memcached" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="rabbitmq">
+<h3>4.2.5. RabbitMQ<a class="headerlink" href="#rabbitmq" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="gnunicorn">
+<h3>4.2.6. Gnunicorn<a class="headerlink" href="#gnunicorn" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="nginx">
+<h3>4.2.7. Nginx<a class="headerlink" href="#nginx" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="puppet">
+<h3>4.2.8. Puppet<a class="headerlink" href="#puppet" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="amazon-aws">
+<h3>4.2.9. Amazon AWS<a class="headerlink" href="#amazon-aws" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="project-layout">
+<h2>4.3. Project layout<a class="headerlink" href="#project-layout" title="Permalink to this headline">¶</a></h2>
+<p>As we have stated before a Django based application has got a project
+and different apps. The following section describes how the the project
+is organized.</p>
+<div class="section" id="pyscaler-project">
+<h3>4.3.1. PyScaler project<a class="headerlink" href="#pyscaler-project" title="Permalink to this headline">¶</a></h3>
+<p>The top-level folder contains:</p>
+<p>+&#8211; apps Folder containing the Django apps
++&#8211; docs&nbsp;Folder containing documentation in reStructuredText format
++&#8211; fixtures Folder containing json files with the initial database data
++&#8211; logs&nbsp;Folder containing Django logs
++&#8211; manage.py&nbsp;Script used to manage the Django site.
++&#8211; pyscaler&nbsp;Folder containing the Django project
+¦ &nbsp; +&#8211; dashboard.py File containing administration pages configuration
+¦ &nbsp; +&#8211; __init__.py&nbsp;File that tells Python that this directory is a Python module
+¦ &nbsp; +&#8211; receivers.py File containing Django signal receiver functions
+¦ &nbsp; +&#8211; settings.py File containing&nbsp;all of the Django project settings
+¦ &nbsp; +&#8211; site_media&nbsp;Folder containing statics assets of the project
+¦ &nbsp; +&#8211; startup.py File containing code to be loaded at startup
+¦ &nbsp; +&#8211; static Folder containing statics assets of installed applications
+¦ &nbsp; +&#8211; templates&nbsp;Folder containing html templates to be used project wide
+¦ &nbsp; +&#8211; urls.py File containing &nbsp;the project root URL configuration
+¦ &nbsp; +&#8211; views.py File containing &nbsp;the project root views
+¦ &nbsp; +&#8211; wsgi.py File containing the WSGI application configuration
++&#8211; requirements.txt File containing the library requirements for the project</p>
+</div>
+<div class="section" id="monitoring-app">
+<h3>4.3.2. Monitoring App<a class="headerlink" href="#monitoring-app" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="description">
+<h4>4.3.2.1. DESCRIPTION<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h4>
+<p>This app is responsible of connecting to remote servers and collect
+performance data. It has got different sub apps for each different
+possible performance data sources. The currently implemented performance
+datasources are SSH and JMX</p>
+<p>This app outputs the collected performance data the collected
+performance counters to filesystem log and to the shared cache
+(memcached)</p>
+<p>This app is defined in the django app apps.monitoring</p>
+</div>
+<div class="section" id="views">
+<h4>4.3.2.2. Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h4>
+<p>These are the views and urls provided by the apps.monitoring&nbsp;app</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://pyscaler/monitoring/">http://pyscaler/monitoring/</a></li>
+</ol>
+<p>This view lists the available clusters and nodes and provides access to
+them</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://pyscaler/monitoring/cluster">http://pyscaler/monitoring/cluster</a>/&lt;CLUSTER&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available performance counters
+in all the cluster nodes. It takes last element of the URL as the
+requested cluster name.</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://pyscaler/monitoring/node">http://pyscaler/monitoring/node</a>/&lt;NODE&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available performance counters
+in a specific node. It takes last element of the URL as the requested
+node name.</p>
+</div>
+<div class="section" id="tasks">
+<h4>4.3.2.3. Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h4>
+<p>These are the Celery tasks provided by the apps.monitoring&nbsp;app</p>
+<ol class="arabic simple">
+<li>launchTriggers</li>
+</ol>
+<p>This is a scheduled task that executes every minute and tries to collect
+all the counters defined in the triggers.</p>
+</div>
+</div>
+</div>
+<div class="section" id="jmx-monitoring-app">
+<h2>4.4. JMX Monitoring App<a class="headerlink" href="#jmx-monitoring-app" title="Permalink to this headline">¶</a></h2>
+<p>This app is used to connect to JVM instances with JMX enabled and
+collect performance data. This app is defined in the django
+package&nbsp;apps.monitoring.jmx</p>
+<div class="section" id="id1">
+<h3>4.4.1. Tasks<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>getJvmTriggerValues(jvm,trigger)</li>
+</ol>
+<p>This tasks connects to the specified JVM and collects all the JMX
+counters defined in the trigger.</p>
+</div>
+<div class="section" id="id2">
+<h3>4.4.2. Views<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/">http://pyscaler/monitoring/jmx/</a></li>
+</ol>
+<p>This view&nbsp;contains links to the configured available clusters, nodes and
+JVMs</p>
+<ol class="arabic simple" start="2">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/cluster">http://pyscaler/monitoring/jmx/cluster</a>/&lt;CLUSTER&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available JMX counters in all
+the cluster nodes. It takes last element of the URL as the requested
+cluster name. The graph data is consumed via JSON webservice.</p>
+<ol class="arabic simple" start="2">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/node">http://pyscaler/monitoring/jmx/node</a>/&lt;NODE&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available JMX counters in a
+specific node. It takes last element of the URL as the requested node
+name. The graph data is consumed via JSON webservice.</p>
+<ol class="arabic simple" start="3">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/jvm">http://pyscaler/monitoring/jmx/jvm</a>/&lt;NODE&gt;/&lt;JVM&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available JMX counters in a
+specific node. It takes last element of the URL as the requested node
+name. The graph data is consumed via JSON webservice.</p>
+<ol class="arabic simple" start="3">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/json/cluster">http://pyscaler/monitoring/jmx/json/cluster</a>/&lt;CLUSTER&gt;/&lt;COUNTER&gt;</li>
+</ol>
+<p>This view returns the last 24h values of a specific counter in all
+cluster JVMs in JSON format. It takes last element of the URL as the
+requested counter name and the previous element as the requested cluster
+name.</p>
+<ol class="arabic simple" start="4">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/json/node">http://pyscaler/monitoring/jmx/json/node</a>/&lt;NODE&gt;/&lt;COUNTER&gt;</li>
+</ol>
+<p>This view returns the last 24h values of a specific counter in all node
+JVMs in JSON format. It takes last element of the URL as the requested
+counter name and the previous element as the requested node name.</p>
+<ol class="arabic simple" start="5">
+<li><a class="reference external" href="http://pyscaler/monitoring/jmx/json/jvm">http://pyscaler/monitoring/jmx/json/jvm</a>/&lt;NODE&gt;/&lt;JVM&gt;/&lt;COUNTER&gt;</li>
+</ol>
+<p>This view returns the&nbsp;last 24h values&nbsp;of a specific counter in a
+specific JVMs&nbsp;in JSON format. It takes last element of the URL as the
+requested counter name, the previous element as the requested JVM name
+and the previous as the requested node name.</p>
+</div>
+<div class="section" id="libraries">
+<h3>4.4.3. Libraries<a class="headerlink" href="#libraries" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Jpype&nbsp;<a class="reference external" href="http://jpype.sourceforge.net/">http://jpype.sourceforge.net/</a></li>
+</ol>
+<p>This library is used to execute java classes from python scripts. It is
+used in the project to execute JMX related code to collect remote JVMs
+performance data.</p>
+</div>
+</div>
+<div class="section" id="ssh-monitoring-app">
+<h2>4.5. SSH monitoring app<a class="headerlink" href="#ssh-monitoring-app" title="Permalink to this headline">¶</a></h2>
+<p>This app is used to connect via ssh to hosts and execute a script. The
+output of this script must be an integer value that represents a
+performance counter. This app is defined in the django
+package&nbsp;apps.monitoring.ssh</p>
+<div class="section" id="id3">
+<h3>4.5.1. Tasks<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="2">
+<li>getSshTriggerValues(ssh,trigger)</li>
+</ol>
+<p>This tasks connects to the specified ssh node and executes the scripts
+defined in the trigger. It stores the output data in Memcache.</p>
+</div>
+<div class="section" id="id4">
+<h3>4.5.2. Views<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="6">
+<li><a class="reference external" href="http://pyscaler/monitoring/ssh/">http://pyscaler/monitoring/ssh/</a></li>
+</ol>
+<p>This view contains links to the configured available clusters and nodes.</p>
+<ol class="arabic simple" start="4">
+<li><a class="reference external" href="http://pyscaler/monitoring/ssh/cluster">http://pyscaler/monitoring/ssh/cluster</a>/&lt;CLUSTER&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available ssh counters in all
+the cluster nodes. It takes last element of the URL as the requested
+cluster name.</p>
+<ol class="arabic simple" start="7">
+<li><a class="reference external" href="http://pyscaler/monitoring/ssh/node">http://pyscaler/monitoring/ssh/node</a>/&lt;NODE&gt;</li>
+</ol>
+<p>This view shows aggregate graphs for the available ssh counters in a
+specific node. It takes last element of the URL as the requested node
+name.</p>
+<ol class="arabic simple" start="5">
+<li><a class="reference external" href="http://pyscaler/monitoring/ssh/json/cluster">http://pyscaler/monitoring/ssh/json/cluster</a>/&lt;CLUSTER&gt;/&lt;COUNTER&gt;</li>
+</ol>
+<p>This view returns the last 24h values of a specific counter in all
+cluster nodes in JSON format. It takes last element of the URL as the
+requested counter name and the previous element as the requested cluster
+name.</p>
+<ol class="arabic simple" start="8">
+<li><a class="reference external" href="http://pyscaler/monitoring/ssh/json/node">http://pyscaler/monitoring/ssh/json/node</a>/&lt;NODE&gt;/&lt;COUNTER&gt;</li>
+</ol>
+<p>This view returns the last 24h values of a specific counter in a node in
+JSON format. It takes last element of the URL as the requested counter
+name and the previous element as the requested node name.</p>
+</div>
+<div class="section" id="id5">
+<h3>4.5.3. Libraries<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="2">
+<li>Paramiko&nbsp;<a class="reference external" href="https://github.com/paramiko/paramiko">https://github.com/paramiko/paramiko</a></li>
+</ol>
+<p>This library is used to execute scripts in remote hosts via SSH from
+python.</p>
+</div>
+</div>
+<div class="section" id="control-module">
+<h2>4.6. Control module<a class="headerlink" href="#control-module" title="Permalink to this headline">¶</a></h2>
+<p>This modules contains the business logic of the application. It has the
+following roles:</p>
+<ol class="arabic simple">
+<li>Manages Cluster and Nodes objects. Can add and remove Nodes
+definitions and handles the Cluster integration</li>
+<li>Triggers the Counters defined in the Clusters’ Triggers</li>
+<li>Triggers groups of actions, either manually or due a Trigger
+threshold</li>
+</ol>
+<p>This module is defined in the django app apps.control</p>
+<div class="section" id="id6">
+<h3>4.6.1. Tasks<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="3">
+<li>launchTriggers()</li>
+</ol>
+<p>Analyzes all Clusters’ Triggers and execute associated Target’s Counters
+to gather performance data. This task is scheduled to be executed every
+minute.</p>
+<ol class="arabic simple">
+<li>analyzePerfomanceData()</li>
+</ol>
+<p>Analyzes the performance data in the backend and triggers the ActionSets
+defined in the Triggerss if the associated counters hit their Thresholds
+during a specified amount of time.</p>
+</div>
+<div class="section" id="id7">
+<h3>4.6.2. Views<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="9">
+<li><a class="reference external" href="http://pyscaler/control/">http://pyscaler/control/</a></li>
+</ol>
+<p>This view contains links to the configured available Cluster and Nodes</p>
+<ol class="arabic simple" start="6">
+<li><a class="reference external" href="http://pyscaler/control/cluster">http://pyscaler/control/cluster</a>/&lt;CLUSTER&gt;</li>
+</ol>
+<p>This view can execute Actions on a Node</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://pyscaler/control/node">http://pyscaler/control/node</a>/&lt;NODE&gt;</li>
+</ol>
+<p>This view can execute Actions on a Node</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://pyscaler/control/cluster">http://pyscaler/control/cluster</a>/&lt;CLUSTER&gt;/execute/&lt;ACTION&gt;</li>
+</ol>
+<p>This view executes the specified action on the specified cluster and
+returns a Celery Task ID</p>
+<ol class="arabic simple" start="2">
+<li><a class="reference external" href="http://pyscaler/control/node">http://pyscaler/control/node</a>/&lt;NODE&gt;/execute/&lt;ACTION&gt;</li>
+<li><a class="reference external" href="http://pyscaler/control/execute/status">http://pyscaler/control/execute/status</a>/&lt;TASKID&gt;</li>
+<li><a class="reference external" href="http://pyscaler/control/execute/output">http://pyscaler/control/execute/output</a>/&lt;TASKID&gt;</li>
+</ol>
+</div>
+<div class="section" id="id8">
+<h3>4.6.3. Tasks<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="10">
+<li>email</li>
+</ol>
+<p>It implements and Action that sends an email to a specific email
+address.</p>
+</div>
+</div>
+<div class="section" id="actions-module">
+<h2>4.7. Actions&nbsp;module<a class="headerlink" href="#actions-module" title="Permalink to this headline">¶</a></h2>
+<p>This module is used to deploy new nodes to a cluster. It interacts with
+the virtual machine provider and deploys new servers.</p>
+<div class="section" id="id9">
+<h3>4.7.1. Tasks<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="11">
+<li>OperatingSystemConfiguration()</li>
+</ol>
+<p>It implements and Action that enforces a Puppet manifest into a specific
+Node</p>
+<ol class="arabic simple" start="12">
+<li>Ec2VMDeploy</li>
+</ol>
+<p>It implements and Action that deploys a new VM to EC2</p>
+<ol class="arabic simple">
+<li>ApplicationConfiguration()</li>
+</ol>
+<p>It implements and Action that executes a Fabric fabfile against a
+specific Node</p>
+</div>
+<div class="section" id="id10">
+<h3>4.7.2. Libraries<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Boto&nbsp;A Python package that provides interfaces to Amazon Web
+Services. It is used to deploy new virtual machines on EC2</li>
+<li>Fabric&nbsp;A Python (2.5 or higher) library and command-line tool for
+streamlining the use of SSH for application deployment or systems
+administration tasks.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="data-model">
+<h2>4.8. Data Model<a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h2>
+<p>There are two types of data managed by</p>
+</div>
+<div class="section" id="performance-data">
+<h2>4.9. Performance data<a class="headerlink" href="#performance-data" title="Permalink to this headline">¶</a></h2>
+<p>The performance data is stored in Memcached.</p>
+<p>Key / Value format</p>
+<p>jmx_jmxcounter.&lt;nodeId&gt;.&lt;jvmid&gt;.&lt;counterid&gt;.yymmhhddhhmmss : &lt;Value&gt;</p>
+<p>ssh_sshcounter.&lt;nodeId&gt;.&lt;jvmid&gt;.&lt;counterid&gt;.yymmhhddhhmmss : &lt;Value&gt;</p>
+</div>
+<div class="section" id="configuration-data">
+<h2>4.10. Configuration data<a class="headerlink" href="#configuration-data" title="Permalink to this headline">¶</a></h2>
+<p>Django provides an
+<a class="reference external" href="http://en.wikipedia.org/wiki/Object-relational_mapping">Object-relational_mapping</a>layer
+that avoids the need of designing the database layout.</p>
+<p>With django you define your data structure by using model classes. A
+model is the single, definitive source of data about your data. It
+contains the essential fields and behaviors of the data you’re storing.
+Generally, each model maps to a single database table. Each module has
+got different models that are interconnected between them.</p>
+<p>The following models contains the configuration information of PyScaler</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="configuration-data-models">
+<h2>4.11. Configuration data models<a class="headerlink" href="#configuration-data-models" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<img alt="" src="_images/Data-Model.png" />
+</div>
+<p>New Virtual Machine deployment steps</p>
+<p>ActionSet has configuration</p>
+<p>baseNodeName, will increment</p>
+<p>baseJVMName, will increment</p>
+<p>JVMNumber, will increment</p>
+<ul class="simple">
+<li>Deploy a new VM on EC2 (clustername,user, )</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Node to Cluster (namefromcluster)</p>
+<ul class="simple">
+<li>Apply OS configuration with Puppet</li>
+<li>Add SSH to Node</li>
+<li>Add JVM to Node</li>
+<li>Deploy last app version with Fabric</li>
+<li>Configure Apache with Fabric</li>
+<li>Configure elastic load balancer</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Design</a><ul>
+<li><a class="reference internal" href="#concepts">4.1. Concepts</a></li>
+<li><a class="reference internal" href="#pyscaler-main-components">4.2. PyScaler main components</a><ul>
+<li><a class="reference internal" href="#django">4.2.1. Django</a></li>
+<li><a class="reference internal" href="#celery">4.2.2. Celery</a></li>
+<li><a class="reference internal" href="#sqlite">4.2.3. SQLite</a></li>
+<li><a class="reference internal" href="#memcached">4.2.4. Memcached</a></li>
+<li><a class="reference internal" href="#rabbitmq">4.2.5. RabbitMQ</a></li>
+<li><a class="reference internal" href="#gnunicorn">4.2.6. Gnunicorn</a></li>
+<li><a class="reference internal" href="#nginx">4.2.7. Nginx</a></li>
+<li><a class="reference internal" href="#puppet">4.2.8. Puppet</a></li>
+<li><a class="reference internal" href="#amazon-aws">4.2.9. Amazon AWS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#project-layout">4.3. Project layout</a><ul>
+<li><a class="reference internal" href="#pyscaler-project">4.3.1. PyScaler project</a></li>
+<li><a class="reference internal" href="#monitoring-app">4.3.2. Monitoring App</a><ul>
+<li><a class="reference internal" href="#description">4.3.2.1. DESCRIPTION</a></li>
+<li><a class="reference internal" href="#views">4.3.2.2. Views</a></li>
+<li><a class="reference internal" href="#tasks">4.3.2.3. Tasks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jmx-monitoring-app">4.4. JMX Monitoring App</a><ul>
+<li><a class="reference internal" href="#id1">4.4.1. Tasks</a></li>
+<li><a class="reference internal" href="#id2">4.4.2. Views</a></li>
+<li><a class="reference internal" href="#libraries">4.4.3. Libraries</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ssh-monitoring-app">4.5. SSH monitoring app</a><ul>
+<li><a class="reference internal" href="#id3">4.5.1. Tasks</a></li>
+<li><a class="reference internal" href="#id4">4.5.2. Views</a></li>
+<li><a class="reference internal" href="#id5">4.5.3. Libraries</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#control-module">4.6. Control module</a><ul>
+<li><a class="reference internal" href="#id6">4.6.1. Tasks</a></li>
+<li><a class="reference internal" href="#id7">4.6.2. Views</a></li>
+<li><a class="reference internal" href="#id8">4.6.3. Tasks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#actions-module">4.7. Actions&nbsp;module</a><ul>
+<li><a class="reference internal" href="#id9">4.7.1. Tasks</a></li>
+<li><a class="reference internal" href="#id10">4.7.2. Libraries</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-model">4.8. Data Model</a></li>
+<li><a class="reference internal" href="#performance-data">4.9. Performance data</a></li>
+<li><a class="reference internal" href="#configuration-data">4.10. Configuration data</a></li>
+<li><a class="reference internal" href="#configuration-data-models">4.11. Configuration data models</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="usecases.html"
+                        title="previous chapter">3. Use Cases</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">5. Installation steps</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/design.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="5. Installation steps"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="usecases.html" title="3. Use Cases"
+             >previous</a> |</li>
+        <li><a href="index.html">PyScaler 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Miquel Adrover.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

@@ -28,21 +28,18 @@ JMX monitoring
 Can be accessed through the menu **Monitoring -> JMX -> Cluster**
 
 .. image:: images/pyscalerJMXCluster.png
-   :scale: 60 %
 
 - Node
 
 Can be accessed through the menu **Monitoring -> JMX -> Node**
 
 .. image:: images/pyscalerJMXNode.png
-   :scale: 60 %
 
 - Jvm
 
 Can be accessed through the menu **Monitoring -> JMX -> Jvm**
 
 .. image:: images/pyscalerJMXJVM.png
-   :scale: 60 %
 
 SSH monitoring
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,14 +49,12 @@ SSH monitoring
 Can be accessed through the menu **Monitoring -> Ssh -> Cluster**
 
 .. image:: images/pyscalerSSHCluster.png
-   :scale: 60 %
 
 - Node
 
 Can be accessed through the menu **Monitoring -> Ssh -> Node**
 
 .. image:: images/pyscalerSSHNode.png
-   :scale: 60 %
 
 Control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
