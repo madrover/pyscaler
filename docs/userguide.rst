@@ -118,6 +118,7 @@ All these screens can be accessed through the menu **Administration**
 - Node administration
 
 .. image:: images/pyscalerAdministrationNode.png
+:scale: 50 %
 
 ----
 
