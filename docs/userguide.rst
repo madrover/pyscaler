@@ -25,7 +25,7 @@ JMX monitoring
 
 - Cluster
 
-Can be accessed through the menu **Monitoring -> JMX -> Cluster**
+It can be accessed through the menu **Monitoring -> JMX -> Cluster**
 
 .. image:: images/pyscalerJMXCluster.png
 
@@ -33,7 +33,7 @@ Can be accessed through the menu **Monitoring -> JMX -> Cluster**
 
 - Node
 
-Can be accessed through the menu **Monitoring -> JMX -> Node**
+It can be accessed through the menu **Monitoring -> JMX -> Node**
 
 ----
 
@@ -41,7 +41,7 @@ Can be accessed through the menu **Monitoring -> JMX -> Node**
 
 - Jvm
 
-Can be accessed through the menu **Monitoring -> JMX -> Jvm**
+It can be accessed through the menu **Monitoring -> JMX -> Jvm**
 
 .. image:: images/pyscalerJMXJVM.png
 
@@ -52,7 +52,7 @@ SSH monitoring
 
 - Cluster
 
-Can be accessed through the menu **Monitoring -> Ssh -> Cluster**
+It can be accessed through the menu **Monitoring -> Ssh -> Cluster**
 
 .. image:: images/pyscalerSSHCluster.png
 
@@ -60,24 +60,27 @@ Can be accessed through the menu **Monitoring -> Ssh -> Cluster**
 
 - Node
 
-Can be accessed through the menu **Monitoring -> Ssh -> Node**
+It can be accessed through the menu **Monitoring -> Ssh -> Node**
 
 .. image:: images/pyscalerSSHNode.png
 
 Control
 -----------------------
 
-- Execution of Distributed Scripts
+Distributed Scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Can be accessed through the menu **Control-> Distributed Scripts**
+
+Execution of Distributed Scripts. It can be accessed through the menu **Control-> Distributed Scripts**
 
 .. image:: images/pyscalerDistributedScripts.png
 
 ----
 
-- Execution of Local Scripts
+- Local Scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Can be accessed through the menu **Control-> Local Scripts**
+Execution of Local Scripts. It can be accessed through the menu **Control-> Local Scripts**
 
 .. image:: images/pyscalerLocalScripts.png
 
@@ -88,7 +91,7 @@ Provisioning
 EC2 nodes provisioning
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Can be accessed through the menu **Provisioning -> Ec2 Nodes**
+Management of EC2 Nodes, can be used add and remove Nodes from PyScaler and EC2. It can be accessed through the menu **Provisioning -> Ec2 Nodes**
 
 .. image:: images/pyscalerEC2Nodes.png
 
@@ -96,7 +99,7 @@ Can be accessed through the menu **Provisioning -> Ec2 Nodes**
 
 Operating system configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Can be accessed through the menu **Provisioning -> OS configurations**
+It can be accessed through the menu **Provisioning -> OS configurations**
 
 .. image:: images/pyscalerOSConfiguration.png
 
