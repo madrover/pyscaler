@@ -13,4 +13,4 @@ Welcome to PyScaler's documentation!
    userguide
    highavailability
    modules 
- 
+   bibliography 
