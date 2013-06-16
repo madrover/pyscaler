@@ -156,13 +156,17 @@ def triggerActionList(request,trigger):
 @login_required
 def triggerExecute(request,trigger):
     """
-    The **triggerExecute** view executes a **Trigger** associated with a **Cluster.
-    It executes each associated **Action** in the order specified in the **TriggerAction** intermediate model Order field.
-    It uses as destination of each **Action** the targer specified in the Target field. It can be:
+    The **triggerExecute** view executes a **Trigger** associated with a **Cluster**.
     
-    * CLUSTER, the **Cluster** associated to the **Trigger**. Can be used by **DeployEc2Node**, **OSConfiguration**, **LocalScript** and **DistributedScript** actions.
-    * LASTNODE, the last created **Node** of the **Cluster** associated to the **Trigger**. Can be used by **OSConfiguration**, **LocalScript** and **DistributedScript** actions.
-    * NONE, no specified target. Can be used by **Email** action.
+    It executes each associated **Action** in the order specified in the **TriggerAction** intermediate model Order field.
+    
+    It uses as destination of each **Action** the targer specified in the Target field.
+    
+    It can be:
+    
+    - CLUSTER, the **Cluster** associated to the **Trigger**. Can be used by **DeployEc2Node**, **OSConfiguration**, **LocalScript** and **DistributedScript** actions.
+    - LASTNODE, the last created **Node** of the **Cluster** associated to the **Trigger**. Can be used by **OSConfiguration**, **LocalScript** and **DistributedScript** actions.
+    - NONE, no specified target. Can be used by **Email** action.
     """
     trigger = get_object_or_404(Trigger.objects.select_related(), name=trigger)
     

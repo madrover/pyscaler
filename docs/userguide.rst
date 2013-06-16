@@ -29,9 +29,13 @@ Can be accessed through the menu **Monitoring -> JMX -> Cluster**
 
 .. image:: images/pyscalerJMXCluster.png
 
+----
+
 - Node
 
 Can be accessed through the menu **Monitoring -> JMX -> Node**
+
+----
 
 .. image:: images/pyscalerJMXNode.png
 
@@ -41,6 +45,8 @@ Can be accessed through the menu **Monitoring -> JMX -> Jvm**
 
 .. image:: images/pyscalerJMXJVM.png
 
+----
+
 SSH monitoring
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -49,6 +55,8 @@ SSH monitoring
 Can be accessed through the menu **Monitoring -> Ssh -> Cluster**
 
 .. image:: images/pyscalerSSHCluster.png
+
+----
 
 - Node
 
@@ -64,6 +72,8 @@ Control
 Can be accessed through the menu **Control-> Distributed Scripts**
 
 .. image:: images/pyscalerDistributedScripts.png
+
+----
 
 - Execution of Local Scripts
 
@@ -81,11 +91,15 @@ Can be accessed through the menu **Provisioning -> Ec2 Nodes**
 
 .. image:: images/pyscalerEC2Nodes.png
 
+----
+
 - Operating system configuration
 
 Can be accessed through the menu **Provisioning -> OS configurations**
 
 .. image:: images/pyscalerOSConfiguration.png
+
+----
 
 Administration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,41 +109,63 @@ All these screens can be accessed through the menu **Administration**
 
 .. image:: images/pyscalerAdministrationCluster.png
 
+----
+
 - Node administration
 
 .. image:: images/pyscalerAdministrationNode.png
+
+----
 
 - EC2 profile administration
 
 .. image:: images/pyscalerAdministrationEc2Profile.png
 
+----
+
 - JVM profile administration
 
 .. image:: images/pyscalerAdministrationJVMProfile.png
 
+----
+
 - Ssh profile administration
 
+----
+
 .. image:: images/pyscalerAdministrationSshProfile.png
+
+----
 
 - EC2Node profile administration
 
 .. image:: images/pyscalerAdministrationDeployEc2Node.png
 
+----
+
 - Distributed Script administration
 
 .. image:: images/pyscalerAdministrationDistributedScript.png
+
+----
 
 - Local Script administration
 
 .. image:: images/pyscalerAdministrationLocalScript.png
 
+----
+
 - Email administration
 
 .. image:: images/pyscalerAdministrationEmail.png
 
+----
+
 - JMX counter administration
 
 .. image:: images/pyscalerAdministrationJmxCounter.png
+
+----
 
 - Trigger administration
 
