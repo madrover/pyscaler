@@ -105,14 +105,19 @@ be responsive and it can not wait a for this lengthy operations to be
 finished. PyScaler overcome this situation by packaging these lengthy
 tasks into asynchronous celery task that are executed in the background.
 
-SQLite
+SqLite
 ~~~~~~~~
 `http://www.sqlite.org/ <http://www.sqlite.org/>`_
 
-SQLite is a self-contained, serverless, zero-configuration,
+SqLite is a self-contained, serverless, zero-configuration,
 transactional SQL database engine.
 
-Using the
+It is used on PyScaler as the configuration storage. As PyScaler almost 
+configuration storage is minimal and almost not varies, using a simple
+database as SqLite eases its management.
+
+For big deployments or high availability reasons it could be easily 
+migrated using Django's ORM layer to another RDMBS as MySql, Oracle, etc...
 
 Memcached
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -144,325 +149,134 @@ is organized.
 PyScaler project
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The top-level folder contains:
-
-+-- apps Folder containing the Django apps  
-+-- docs Folder containing documentation in reStructuredText format  
-+-- fixtures Folder containing json files with the initial database data  
-+-- logs Folder containing Django logs
-+-- manage.py Script used to manage the Django site.
-+-- pyscaler Folder containing the Django project
-¦   +-- dashboard.py File containing administration pages configuration
-¦   +-- \_\_init\_\_.py File that tells Python that this directory is a Python module
-¦   +-- receivers.py File containing Django signal receiver functions
-¦   +-- settings.py File containing all of the Django project settings
-¦   +-- site\_media Folder containing statics assets of the project
-¦   +-- startup.py File containing code to be loaded at startup
-¦   +-- static Folder containing statics assets of installed applications
-¦   +-- templates Folder containing html templates to be used project wide
-¦   +-- urls.py File containing  the project root URL configuration
-¦   +-- views.py File containing  the project root views
-¦   +-- wsgi.py File containing the WSGI application configuration
-+-- requirements.txt File containing the library requirements for the project
+It contains all the settings for an instance of Django. This includes database configuration,
+Django-specific options and application-specific settings.
 
 
-Monitoring App
+Django apps
 ~~~~~~~~~~~~~~~~~~~~~~
 
-DESCRIPTION
-^^^^^^^^^^^^
+apps.monitoring app
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 This app is responsible of connecting to remote servers and collect
-performance data. It has got different sub apps for each different
+performance data. It is basically a container of different sub apps for each different
 possible performance data sources. The currently implemented performance
-datasources are SSH and JMX
+data sources are SSH and JMX
 
 This app outputs the collected performance data the collected
 performance counters to filesystem log and to the shared cache
 (memcached)
 
-This app is defined in the django app apps.monitoring
+It provides the following services:
 
-Views
-^^^^^^^^^^^^^^^
+- Contains JMX and SSH apps
+- Provides access web page to sub apps
 
-These are the views and urls provided by the apps.monitoring app
+apps.monitoring.jmx app
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. http://pyscaler/monitoring/
+This app is used to manage performance data gathered from JVMs via JMX.
 
-This view lists the available clusters and nodes and provides access to
-them
+It provides the following services:
 
-#. http://pyscaler/monitoring/cluster/<CLUSTER>
+- JVM counter gathering tasks
+- JVM counter graph pages
+- JVM counter data api to feed dynamic graph pages
 
-This view shows aggregate graphs for the available performance counters
-in all the cluster nodes. It takes last element of the URL as the
-requested cluster name.
+Relevant libraries
+%%%%%%%%%%%%%%%%%%%%
 
-#. http://pyscaler/monitoring/node/<NODE>
-
-This view shows aggregate graphs for the available performance counters
-in a specific node. It takes last element of the URL as the requested
-node name.
-
-Tasks
-^^^^^^^^^^^^^^^
-
-These are the Celery tasks provided by the apps.monitoring app
-
-#. launchTriggers
-
-This is a scheduled task that executes every minute and tries to collect
-all the counters defined in the triggers.
+- Jpype `http://jpype.sourceforge.net/ <http://jpype.sourceforge.net/>`_ 
+  
+  This library is used to execute java classes from python scripts. It is
+  used in the project to execute JMX related code to collect remote JVMs
+  performance data.
 
 
-JMX Monitoring App
-------------------------------------------------------
-
-This app is used to connect to JVM instances with JMX enabled and
-collect performance data. This app is defined in the django
-package apps.monitoring.jmx
-
-Tasks
-~~~~~~~~~
-
-#. getJvmTriggerValues(jvm,trigger)
-
-This tasks connects to the specified JVM and collects all the JMX
-counters defined in the trigger.
-
-Views
-~~~~~~~~~
-
-#. http://pyscaler/monitoring/jmx/
-
-This view contains links to the configured available clusters, nodes and
-JVMs
-
-2. http://pyscaler/monitoring/jmx/cluster/<CLUSTER>
-
-This view shows aggregate graphs for the available JMX counters in all
-the cluster nodes. It takes last element of the URL as the requested
-cluster name. The graph data is consumed via JSON webservice.
-
-2. http://pyscaler/monitoring/jmx/node/<NODE>
-
-This view shows aggregate graphs for the available JMX counters in a
-specific node. It takes last element of the URL as the requested node
-name. The graph data is consumed via JSON webservice.
-
-3. http://pyscaler/monitoring/jmx/jvm/<NODE>/<JVM>
-
-This view shows aggregate graphs for the available JMX counters in a
-specific node. It takes last element of the URL as the requested node
-name. The graph data is consumed via JSON webservice.
-
-3. http://pyscaler/monitoring/jmx/json/cluster/<CLUSTER>/<COUNTER>
-
-This view returns the last 24h values of a specific counter in all
-cluster JVMs in JSON format. It takes last element of the URL as the
-requested counter name and the previous element as the requested cluster
-name.
-
-4. http://pyscaler/monitoring/jmx/json/node/<NODE>/<COUNTER>
-
-This view returns the last 24h values of a specific counter in all node
-JVMs in JSON format. It takes last element of the URL as the requested
-counter name and the previous element as the requested node name.
-
-5. http://pyscaler/monitoring/jmx/json/jvm/<NODE>/<JVM>/<COUNTER>
-
-This view returns the last 24h values of a specific counter in a
-specific JVMs in JSON format. It takes last element of the URL as the
-requested counter name, the previous element as the requested JVM name
-and the previous as the requested node name.
-
-Libraries
-~~~~~~~~~
-
-#. Jpype `http://jpype.sourceforge.net/ <http://jpype.sourceforge.net/>`_
-
-This library is used to execute java classes from python scripts. It is
-used in the project to execute JMX related code to collect remote JVMs
-performance data.
-
-
-SSH monitoring app
-------------------
+apps.monitoring.ssh app
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 This app is used to connect via ssh to hosts and execute a script. The
 output of this script must be an integer value that represents a
 performance counter. This app is defined in the django
 package apps.monitoring.ssh
 
-Tasks
-~~~~~~~~~
+It provides the following services:
 
-2. getSshTriggerValues(ssh,trigger)
+- JVM counter gathering tasks
+- JVM counter graph pages
+- JVM counter data api to feed dynamic graph pages
 
-This tasks connects to the specified ssh node and executes the scripts
-defined in the trigger. It stores the output data in Memcache.
+Relevant libraries
+%%%%%%%%%%%%%%%%%%%%
 
-Views
-~~~~~~~~~
+- **Paramiko** `https://github.com/paramiko/paramiko <https://github.com/paramiko/paramiko>`_
 
-6. http://pyscaler/monitoring/ssh/
+  This library is used to execute scripts in remote hosts via SSH from
+  python.
 
-This view contains links to the configured available clusters and nodes.
+apps.control app
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-4. http://pyscaler/monitoring/ssh/cluster/<CLUSTER>
-
-This view shows aggregate graphs for the available ssh counters in all
-the cluster nodes. It takes last element of the URL as the requested
-cluster name.
-
-7. http://pyscaler/monitoring/ssh/node/<NODE>
-
-This view shows aggregate graphs for the available ssh counters in a
-specific node. It takes last element of the URL as the requested node
-name.
-
-5. http://pyscaler/monitoring/ssh/json/cluster/<CLUSTER>/<COUNTER>
-
-This view returns the last 24h values of a specific counter in all
-cluster nodes in JSON format. It takes last element of the URL as the
-requested counter name and the previous element as the requested cluster
-name.
-
-8. http://pyscaler/monitoring/ssh/json/node/<NODE>/<COUNTER>
-
-This view returns the last 24h values of a specific counter in a node in
-JSON format. It takes last element of the URL as the requested counter
-name and the previous element as the requested node name.
-
-Libraries
-~~~~~~~~~
-
-2. Paramiko `https://github.com/paramiko/paramiko <https://github.com/paramiko/paramiko>`_
-
-This library is used to execute scripts in remote hosts via SSH from
-python.
-
-
-
-Control module
---------------
-
-This modules contains the business logic of the application. It has the
+This module contains the business logic of the application. It has the
 following roles:
 
-#. Manages Cluster and Nodes objects. Can add and remove Nodes
-   definitions and handles the Cluster integration
-#. Triggers the Counters defined in the Clusters’ Triggers
-#. Triggers groups of actions, either manually or due a Trigger
-   threshold
+- Manages Cluster and Nodes objects. Can add and remove Nodes
+  definitions and handles the Cluster integration
+- Triggers the Counters defined in the Clusters’ Triggers
+- Triggers groups of actions, either manually or due a Trigger threshold
 
-This module is defined in the django app apps.control
+It provides the following services:
 
-Tasks
-~~~~~~~~~
-
-3. launchTriggers()
-
-Analyzes all Clusters’ Triggers and execute associated Target’s Counters
-to gather performance data. This task is scheduled to be executed every
-minute.
-
-#. analyzePerfomanceData()
-
-Analyzes the performance data in the backend and triggers the ActionSets
-defined in the Triggerss if the associated counters hit their Thresholds
-during a specified amount of time.
-
-Views
-~~~~~~~~~
-
-9. http://pyscaler/control/
-
-This view contains links to the configured available Cluster and Nodes
-
-6. http://pyscaler/control/cluster/<CLUSTER>
-
-This view can execute Actions on a Node
-
-#. http://pyscaler/control/node/<NODE>
-
-This view can execute Actions on a Node
-
-#. http://pyscaler/control/cluster/<CLUSTER>/execute/<ACTION>
-
-This view executes the specified action on the specified cluster and
-returns a Celery Task ID
-
-2. http://pyscaler/control/node/<NODE>/execute/<ACTION>
-3. http://pyscaler/control/execute/status/<TASKID>
-4. http://pyscaler/control/execute/output/<TASKID>
+- Launch all performance data gathering tasks
+- Analyze performance data and trigger actions if needed
+- Serve frontend webpages to execute actions such as scripts and trigger execution
+  or node management
 
 
-Tasks
-~~~~~~~~~
+apps.actions app
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-10. email
+This module contains the different actions that can be triggered from PyScaler.
 
-It implements and Action that sends an email to a specific email
-address.
+Relevant libraries
+%%%%%%%%%%%%%%%%%%%%
 
-Actions module
-------------------------------------------
+- **Boto** `https://github.com/boto/boto <https://github.com/boto/boto>`_
 
-This module is used to deploy new nodes to a cluster. It interacts with
-the virtual machine provider and deploys new servers.
-
-Tasks
-~~~~~~~~~
-
-11. OperatingSystemConfiguration()
-
-It implements and Action that enforces a Puppet manifest into a specific
-Node
-
-12. Ec2VMDeploy
-
-It implements and Action that deploys a new VM to EC2
-
-#. ApplicationConfiguration()
-
-It implements and Action that executes a Fabric fabfile against a
-specific Node
-
-Libraries
-~~~~~~~~~
-
-#. Boto A Python package that provides interfaces to Amazon Web
+   A Python package that provides interfaces to Amazon Web
    Services. It is used to deploy new virtual machines on EC2
-#. Fabric A Python (2.5 or higher) library and command-line tool for
-   streamlining the use of SSH for application deployment or systems
-   administration tasks.
 
+- **Fabric** `http://www.fabfile.org <http://www.fabfile.org>`_
   
+  A Python (2.5 or higher) library and command-line tool for
+  streamlining the use of SSH for application deployment or systems
+  administration tasks.
+
 
 Data Model
-------------------------------------------
+-------------------
 
-There are two types of data managed by
+There are two types of data managed by PyScaler.
 
 Performance data
-------------------------------------------------
+---------------------
 
-The performance data is stored in Memcached.
+The performance data is stored in Memcached. Data is stored in a dictionary dataç
+structure with the following format 
 
-Key / Value format
+- **Key / Value format**
 
-jmx\_jmxcounter.<nodeId>.<jvmid>.<counterid>.yymmhhddhhmmss : <Value>
-
-ssh\_sshcounter.<nodeId>.<jvmid>.<counterid>.yymmhhddhhmmss : <Value>
+  - jmx\_jmxcounter.<nodeId>.<jvmid>.<counterid>.yymmhhddhhmmss : <Value>
+  - ssh\_sshcounter.<nodeId>.<jvmid>.<counterid>.yymmhhddhhmmss : <Value>
 
 Configuration data
 --------------------------------------------------
 
 Django provides an
-`Object-relational\_mapping <http://en.wikipedia.org/wiki/Object-relational_mapping>`_\ layer
-that avoids the need of designing the database layout.
+`Object-relational\_mapping <http://en.wikipedia.org/wiki/Object-relational_mapping>`_  
+layer that avoids the need of designing the database layout.
 
 With django you define your data structure by using model classes. A
 model is the single, definitive source of data about your data. It
@@ -480,15 +294,29 @@ The following models contains the configuration information of PyScaler
    :align: center
    :alt: 
 
+Documentation
+------------------------
+
+Sphinx based
+
 New Node deployment steps
 -----------------------------------
-This sections describes the steps needed to deploy 
+This sections describes the steps needed to deploy a new node
 
-- Deploy a new VM on EC2 (clustername,user, )
-- Add Node to Cluster (namefromcluster)
-- Apply OS configuration with Puppet
-- Add SSH to Node
-- Add JVM to Node
-- Deploy last app version with Fabric
-- Configure Apache with Fabric
-- Configure elastic load balancer
++--------------------------------------------------+--------------------------------------------+
+| STEP                                             |                                            |
++==================================================+============================================+
+| Deploy a new VM on EC2 (clustername,user, )      | DeployEC2Node action                       |
++--------------------------------------------------+--------------------------------------------+
+| Add the node to the Elastic Load Balancer        | DeployEC2Node action                       |
++--------------------------------------------------+--------------------------------------------+
+| Operating system configuration and provisioning  | OSConfiguration action                     |
++--------------------------------------------------+--------------------------------------------+
+| Tomcat configuration                             | LocalScript or DistributeScript actions    |
++--------------------------------------------------+--------------------------------------------+
+| Application deployment                           | LocalScript or DistributeScript actions    |                   
++--------------------------------------------------+--------------------------------------------+
+| Cluster update                                   | LocalScript or DistributeScript actions    |
++--------------------------------------------------+--------------------------------------------+
+| Notification                                     | Email action                               |
++--------------------------------------------------+--------------------------------------------+

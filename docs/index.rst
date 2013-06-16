@@ -12,5 +12,6 @@ Welcome to PyScaler's documentation!
    installation
    userguide
    highavailability
+   security
    modules 
    bibliography 
