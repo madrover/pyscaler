@@ -122,21 +122,59 @@ migrated using Django's ORM layer to another RDMBS as MySql, Oracle, etc...
 Memcached
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Memcached is a general-purpose distributed memory caching system. It is often used
+to speed up dynamic database-driven websites by caching data and objects in RAM to
+reduce the number of times an external data source (such as a database or API) must be read.
+
+In PyScaler it is used to store the gathered performance data. As it is memory based
+all queries are really fast and it is easily scalable.
+
+
 RabbitMQ
 ~~~~~~~~~~~~~~~~~~~~~~
+RabbitMQ is open source message broker software (i.e., message-oriented middleware)
+that implements the Advanced Message Queuing Protocol (AMQP) standard. 
 
-Gnunicorn
+It is used by Celery to manage the tasks.
+
+Gunicorn
 ~~~~~~~~~~~~~~~~~~~~~~
+
+The Gunicorn "Green Unicorn" is a Python Web Server Gateway Interface HTTP Server for Unix.
+
+Although Django provides a basic web server for development it is not suitable for 
+production because it is not optimized to handle all types of requests, such as static files,
+or high loads. Gunicorn is a pre-fork worker model, ported from Ruby's Unicorn project.
+The Gunicorn server is broadly compatible with a number of web application frameworks, 
+simply implemented, light on server resources and fairly fast.
 
 Nginx
 ~~~~~~~~~~~~~~~~~~~~~~
+nginx (pronounced "engine x") is an open source web server and a reverse proxy server for
+HTTP, SMTP, POP3, and IMAP protocols, with a strong focus on high concurrency, performance
+and low memory usage.
+
+Nginx is used to serve the required static files and to proxy dynamic request to Gunicorn,
+where Django is executed.
 
 Puppet
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Amazon AWS
-~~~~~~~~~~~~~~~~~~~~~~
+Puppet is IT automation software that helps system administrators manage infrastructure 
+throughout its lifecycle, from provisioning and configuration to patch management and compliance.
+Using Puppet, you can easily automate repetitive tasks, quickly deploy critical applications,
+and proactively manage change, scaling from 10s of servers to 1000s, on-premise or in the cloud.
 
+It is used by PyScaler to provision Nodes.
+
+Amazon Web Services
+~~~~~~~~~~~~~~~~~~~~~~
+Amazon Web Services (abbreviated AWS) is a collection of remote computing services
+(also called web services) that together make up a cloud computing platform. They are Amazon.com
+cloud Infraestructure As A Service offering.
+
+PyScaler makes direct use of EC2 (Elastic Compute Cloud) and ELB (Elastic Load Balancer) although
+it can make use of additional services if needed.
 
 
 Project layout
@@ -297,7 +335,23 @@ The following models contains the configuration information of PyScaler
 Documentation
 ------------------------
 
-Sphinx based
+PyScaler documentation is `Sphinx <http://sphinx-doc.org/>`_ based. Sphinx is a tool that makes
+it easy to create intelligent and beautiful documentation and has excellent facilities for the 
+documentation of Python projects.
+
+Sphinx uses `reStructuredText <http://docutils.sf.net/rst.html>`_ as its markup language, and 
+many of its strengths come from the power and straightforwardness of reStructuredText and its
+parsing and translating suite, the `Docutils <http://docutils.sf.net/>`_.
+
+The usage of Sphinx with`github <https://github.com>`_ along the `Readthedocs  <https://readthedocs.org/>`_
+service enables PyScaler documentation to be automatically generated and posted to Internet.
+
+Latest version of its documentation can always be found at:
+
+- `http://pyscaler.readthedocs.org/ <http://pyscaler.readthedocs.org/>`_ (HTML format)
+- `https://media.readthedocs.org/pdf/pyscaler/latest/pyscaler.pdf <https://media.readthedocs.org/pdf/pyscaler/latest/pyscaler.pdf>`_ (PDF format)
+
+
 
 New Node deployment steps
 -----------------------------------

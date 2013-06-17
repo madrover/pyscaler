@@ -24,6 +24,7 @@ Bibliography
 -  Django
   
   - Django https://www.djangoproject.com/
+  - Nginx / Gunicorn http://serverfault.com/questions/331256/why-do-i-need-nginx-and-something-like-gunicorn
 
 - Task managing
   
