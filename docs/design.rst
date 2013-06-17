@@ -31,7 +31,7 @@ Concepts
  - **RemoveEc2Node** Stops a virtual machine on EC2 and removes its associated Node
  - **OSConfiguration** Enforce an operating system configuration via Puppet
 
-PyScaler main components
+Main components
 ---------------------------
 
 .. figure:: images/Components.png
@@ -331,26 +331,6 @@ The following models contains the configuration information of PyScaler
 .. figure:: images/Data-Model.png
    :align: center
    :alt: 
-
-Documentation
-------------------------
-
-PyScaler documentation is `Sphinx <http://sphinx-doc.org/>`_ based. Sphinx is a tool that makes
-it easy to create intelligent and beautiful documentation and has excellent facilities for the 
-documentation of Python projects.
-
-Sphinx uses `reStructuredText <http://docutils.sf.net/rst.html>`_ as its markup language, and 
-many of its strengths come from the power and straightforwardness of reStructuredText and its
-parsing and translating suite, the `Docutils <http://docutils.sf.net/>`_.
-
-The usage of Sphinx with`github <https://github.com>`_ along the `Readthedocs  <https://readthedocs.org/>`_
-service enables PyScaler documentation to be automatically generated and posted to Internet.
-
-Latest version of its documentation can always be found at:
-
-- `http://pyscaler.readthedocs.org/ <http://pyscaler.readthedocs.org/>`_ (HTML format)
-- `https://media.readthedocs.org/pdf/pyscaler/latest/pyscaler.pdf <https://media.readthedocs.org/pdf/pyscaler/latest/pyscaler.pdf>`_ (PDF format)
-
 
 
 New Node deployment steps

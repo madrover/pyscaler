@@ -3,8 +3,8 @@ The **apps.actions.tasks** module contains the Celery tasks for the **actions** 
 """
 from djcelery import celery
 from celery.utils.log import get_task_logger
-import time
-from apps.actions.models import DistributedScript, LocalScript
+import time,os
+from apps.actions.models import DistributedScript, LocalScript, OSConfiguration
 from apps.control.models import Cluster, Node
 import subprocess
 from django.conf import settings
@@ -15,12 +15,13 @@ logger = get_task_logger(__name__)
 
 
 @celery.task
-def executeScript(destination,script):
+def executeViaFabric(destination,script):
     """
-    | The **executeScript** task executes **LocalScripts** or **DistributedScripts** using Fabric's **fab** utility.   
+    | The **executeViaFabric** task executes **LocalScripts** or **DistributedScripts** or **OSConfigurations** using Fabric's **fab** utility.   
     | It can be used using both **Nodes** or **Clusters** as destinations    
     | If the script is a **LocalScript** then **fab** will run the an operating system script locally on each destination    
     | If the script is a **DistributedScript** then **fab** will run a Fabric's fabfile locally on the PyScaler service but using the defined destination as target   
+    | If the script is an **OSConfigurations** then **fab** will run an existing fabfile called **puppet.py**, that will deploy the **OSConfiguration** in the destination target
     
     """
     hosts = ""
@@ -38,11 +39,18 @@ def executeScript(destination,script):
                
     args = "fab --abort-on-prompts -H " + hosts + keyfiles
     
-    #Preparing fab parameters
+    #Preparing fab parameters dependinf of the script type
     if isinstance(script, LocalScript):
         args = args + " -- " + script.script
     elif isinstance(script, DistributedScript):
         args = args + " -f " + script.fabfile +  " " + script.commandLine
+    elif isinstance(script, OSConfiguration):
+        #If deploying a puppet file
+        fabfile = os.path.join(settings.PROJECT_ROOT,"apps/actions/puppet.py")
+        args = args + " -f " + fabfile +  " deploy_puppetfile:" + script.puppetfile
+    
+    logger.debug(args)
+        
 
     #Executing fab
     try:

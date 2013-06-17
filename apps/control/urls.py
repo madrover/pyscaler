@@ -7,8 +7,7 @@ The **apps.control.urls** module contains the Django urls definition for the **c
 * /control/cluster/**cluster**/triggerlist/
     Launches the **triggerlist** views function.
     
-* /control/ec2nodes/
-    Launches the **ec2nodes** views function.
+
     
 * /control/ec2profile/detail/{{ec2profile**)/
     Launches the **ec2profileDetail** views function.
@@ -31,6 +30,8 @@ The **apps.control.urls** module contains the Django urls definition for the **c
 * /control/trigger/output/**taskid**/
     Launches the **triggerOutput** views function.
 
+* /control/osprovisioning/
+    Launches the **osprovisioning** views function.
 
 """
 from django.conf.urls import patterns, include, url
@@ -49,6 +50,7 @@ urlpatterns = patterns('',
     url(r'^trigger/(?P<trigger>'+ slugpattern + ')/actionlist/$', views.triggerActionList, name='triggerActionList'),
     url(r'^trigger/(?P<trigger>'+ slugpattern + ')/execute/$', views.triggerExecute, name='triggerExecute'),
     url(r'^trigger/output/(?P<taskid>'+ slugpattern + ')/$', views.triggerOutput, name='triggerOutput'),
+    url(r'^osprovisioning/$', views.osprovisioning, name='osprovisioning'),
     
 )
 

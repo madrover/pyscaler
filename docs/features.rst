@@ -15,10 +15,10 @@ Features
    PyScaler can connect to remote JVMs via JMX and gather performance data
    via the exposed mbeans.  
 
- - **Counter graphs**
+ - **Interactive counter graphs**
    
-   The performance data can be easily visualized using available graphs. 
-   There are different graphs per monitored target and counters.
+   The performance data can be easily visualized using available graphs.. 
+   There are different graphs per monitored target and counters that can be zoomed.
 
 - **Control**
    PySCaler can be execute actions against its managed nodes. These action
@@ -62,6 +62,22 @@ Features
   is reached then the necessary actions to deploy a new cluster node will  
   be executed, thus scaling it.
 
-- **High availability**
+- **Task based engine**
+
+  PyScaler makes uses of Celery to launch all lengthy or periodic tasks in the backend.
+  Celery can be used to handle retries and distribution of the tasks.
+  
+- **Restful urls and API**
+  PyScaler urls are cleanly designed to be understood by human beings.
+  Most available objects are exposed via a restful API and JSON
+
+- **Ajax based interface**
+  The usage of a task based backend along the jquery and json enables the 
+  development of a fluid ajax based interface.
+  
+  - **High availability**
 
   Each component of PyScaler is designed to be highly available.
+  
+
+  

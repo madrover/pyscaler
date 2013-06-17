@@ -1,0 +1,107 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}
+{% if localscripts %}
+Local Scripts
+{% endif %}
+{% if distributedscripts %}
+Distributed Scripts
+{% endif %}
+{% if osconfigurations %}
+Operating System Configurations
+{% endif %}
+{% endblock %}
+{% block body %}
+<style>
+	.menutable {border: 2px solid white;}
+	.menutabletd {background-color:#EEEEEE;border: 2px solid white; width:250px;padding:10px;}
+</style>
+
+{% if localscripts %}
+<h1>Local Scripts</h1>
+{% endif %}
+{% if distributedscripts %}
+<h1>Distributed Scripts</h1>
+{% endif %}
+{% if osconfigurations %}
+<h1>Operating System Configurations</h1>
+{% endif %}
+
+<form action="">
+<table class="menutable">
+<tr>
+    <th>Cluster</th>
+    <th>Nodes</th>
+	{% if localscripts %}
+	<th>Local Scripts</th>
+	{% endif %}
+	{% if distributedscripts %}
+	<th>Distributed Scripts</th>
+	{% endif %}
+	{% if osconfigurations %}
+	<h1>OSConfigurations</h1>
+	{% endif %}
+
+</tr>
+<tr>
+    <td class="menutabletd">
+    	<div id="clusters">
+	    	{% for cluster in clusters %}
+			<input type="radio" name="cluster" value="{{cluster.name}}">{{cluster.name}}<br>
+			{% endfor %}
+		</div>
+   	</td>
+    <td class="menutabletd">
+    	<div id="nodes"></div>
+   	</td>
+     <td class="menutabletd">
+		<div id="scripts">
+			{% if localscripts %}
+				{% for localscript in localscripts %}
+					<input type="radio" name="script" value="{{localscript.name}}">{{localscript.name}}<br>
+				{% endfor %}
+			{% endif %}
+			{% if distributedscripts %}
+				{% for distributedscript in distributedscripts %}
+					<input type="radio" name="script" value="{{distributedscript.name}}">{{distributedscript.name}}<br>
+				{% endfor %}
+			{% endif %}
+			{% if osconfigurations %}
+				{% for osconfiguration in osconfigurations %}
+					<input type="radio" name="script" value="{{osconfiguration.name}}">{{osconfiguration.name}}<br>
+				{% endfor %}
+			{% endif %}
+		</div>
+   	</td>
+</tr>
+<tr>
+    <th colspan = "3 "> <div style="width:750px;float:left;text-align:left">Actions</div></th>
+</tr>
+<tr>
+    <td colspan = "3 ">
+    	<button id="executescript">
+    	{% if osconfigurations %}
+    		Deploy
+    	{% else %}
+    		Execute
+    	{% endif %}
+    	</button>
+    	
+    </td>
+</tr>
+<tr>
+    <th colspan = "3 "> <div style="width:750px;float:left;text-align:left">Output</div></th>
+</tr>
+<tr>
+    <td colspan = "3"><div id="output"style="background-color:#EEEEEE";height:200px;width:600px;float:left> </div></td>
+</tr>
+</table>
+
+</form>
+{% endblock %}
+
+{% block extra_script %}
+<script type="text/javascript" src="/site_media/static/control/js/execute.js"></script>
+{% endblock %}

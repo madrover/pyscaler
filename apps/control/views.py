@@ -6,13 +6,13 @@ from django.template import Context, loader
 from django.shortcuts import render
 from django import forms
 from apps.control.models import Cluster, Node,Trigger
-from apps.actions.models import Action,DistributedScript,LocalScript,Ec2Profile,SshProfile,JvmProfile,TriggerAction
+from apps.actions.models import Action,DistributedScript,LocalScript,Ec2Profile,SshProfile,JvmProfile,TriggerAction, OSConfiguration
 from django.shortcuts import get_object_or_404
-from apps.actions.tasks import executeScript
+from apps.actions.tasks import executeViaFabric
 from apps.control import tasks
 from django.utils.simplejson import dumps, loads, JSONEncoder
 from django.contrib.auth.decorators import login_required
-from apps.actions.tasks import executeScript,ec2nodeDeploy,ec2nodeRemove
+from apps.actions.tasks import executeViaFabric,ec2nodeDeploy,ec2nodeRemove
 from apps.actions.models import TriggerAction,Action,Email,OSConfiguration,LocalScript,DistributedScript,DeployEc2Node
 from celery import chain
 from celery.result import AsyncResult
@@ -69,22 +69,23 @@ def ec2nodes(request):
     })
     return render(request, 'ec2nodes.html',context)
 
-# @login_required
-# def ec2nodeDetail(destination,ec2node):
-#     
-#     ec2node = get_object_or_404(Ec2Profile, name=ec2node)
-#     nodeDetail ={
-#                  'name': ec2node.name,
-#                  }
-#     for field in Ec2Profile._meta.get_all_field_names():
-#         if field not in ['action_ptr', 'actions', 'id', 'triggers']:
-#             nodeDetail[field]=getattr(ec2node,field)
-#     return HttpResponse(dumps(nodeDetail), 'application/json')
+@login_required
+def osprovisioning(request):
+    """
+    The **osprovisioning** function is used display the **OSConfiguration** deployment  page on the frontend web page. It uses the **execute.html** template.
+    """
+    clusters = Cluster.objects.select_related().all()
+    osconfigurations = OSConfiguration.objects.all()
+    context = Context({
+        'clusters': clusters,
+        'osconfigurations':osconfigurations,
+    })
+    return render(request, 'execute.html',context)
 
 @login_required
 def localscripts(request):
     """
-    The **localscripts** function is used display the **LocalScript** execution  page on the frontend web page. It uses the **scripts.html** template.
+    The **localscripts** function is used display the **LocalScript** execution  page on the frontend web page. It uses the **execute.html** template.
     """
     clusters = Cluster.objects.select_related().all()
     localscripts = LocalScript.objects.all()
@@ -92,12 +93,12 @@ def localscripts(request):
         'clusters': clusters,
         'localscripts':localscripts,
     })
-    return render(request, 'scripts.html',context)
+    return render(request, 'execute.html',context)
 
 @login_required
 def distributedscripts(request):
     """
-    The **distributedscripts** function is used display the **DistributedScript** execution  page on the frontend web page. It uses the **scripts.html** template.
+    The **distributedscripts** function is used display the **DistributedScript** execution  page on the frontend web page. It uses the **execute.html** template.
     """
     clusters = Cluster.objects.select_related().all()
     distributedscripts = DistributedScript.objects.all()
@@ -105,7 +106,7 @@ def distributedscripts(request):
         'clusters': clusters,
         'distributedscripts':distributedscripts,
     })
-    return render(request, 'scripts.html',context)
+    return render(request, 'execute.html',context)
 
 
 @login_required
@@ -196,10 +197,10 @@ def triggerExecute(request,trigger):
         destination = actions[key]['destination']
         action = actions[key]['action']
         if isinstance(action, LocalScript):
-            subtask = executeScript.si(destination,action)
+            subtask = executeViaFabric.si(destination,action)
             subtasks.append(subtask)
         elif isinstance(action, DistributedScript):
-            subtask = executeScript.si(destination,action)
+            subtask = executeViaFabric.si(destination,action)
             subtasks.append(subtask)
         elif isinstance(action, DeployEc2Node):
             subtask = ec2nodeDeploy.si(destination,action.ec2profile,action.sshprofile,action.jvmprofiles)

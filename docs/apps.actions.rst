@@ -20,7 +20,7 @@ actions Package
 .. automodule:: apps.actions.tasks
     :members:
     
-    .. autofunction:: executeScript(destination,script) 
+    .. autofunction:: executeViaFabric(destination,script) 
     .. autofunction:: ec2nodeDeploy(cluster,ec2profile,sshprofile,jvmprofiles)
     .. autofunction:: ec2nodeRemove(cluster,node)
 

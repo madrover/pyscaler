@@ -12,39 +12,39 @@ from django.contrib.auth.decorators import login_required
 from celery.result import AsyncResult 
 
 @login_required
-def executeScriptOnCluster(request,cluster,script):
+def executeViaFabricOnCluster(request,cluster,script):
     """
-    | The **executeScriptOnCluster** function is used to execute a **DistributedScript** or **LocalScript** on a **Cluster**.
-    | It uses the **executeScriptTask** function to execute the script.
+    | The **executeViaFabricOnCluster** function is used to execute a **DistributedScript** or **LocalScript** on a **Cluster**.
+    | It uses the **executeViaFabricTask** function to execute the script.
     """
     cluster = get_object_or_404(Cluster,name=cluster)
-    return executeScriptTask(cluster,script)
+    return executeViaFabricTask(cluster,script)
     
 @login_required
-def executeScriptOnNode(request,cluster,node,script):
+def executeViaFabricOnNode(request,cluster,node,script):
     """
-    | The **executeScriptOnNode** function is used to execute a **DistributedScript** or **LocalScript** on a **Node**.
-    | It uses the **executeScriptTask** function to execute the script. 
+    | The **executeViaFabricOnNode** function is used to execute a **DistributedScript** or **LocalScript** on a **Node**.
+    | It uses the **executeViaFabricTask** function to execute the script. 
     """
     cluster = get_object_or_404(Cluster,name=cluster)
     node = get_object_or_404(Node,name=node,cluster__name=cluster)
-    return executeScriptTask(node,script)
+    return executeViaFabricTask(node,script)
  
-def executeScriptTask(destination,script):
+def executeViaFabricTask(destination,script):
     """
-    | The **executeScriptTask** function is executed by the **executeOnNode** and **executeOnCluster** function views to execute a **DistributedScript** or **LocalScript** on a specific destination.
+    | The **executeViaFabricTask** function is executed by the **executeOnNode** and **executeOnCluster** function views to execute a **DistributedScript** or **LocalScript** on a specific destination.
     | Its output is a JSON object containing the id of the Celery task that is executing the script.
     """
     script = get_object_or_404(Action,name=script)
     script = Action.objects.get_subclass(name=script)
-    task = tasks.executeScript.delay(destination,script)
+    task = tasks.executeViaFabric.delay(destination,script)
     
     return HttpResponse(dumps({'taskid':task.id}), 'application/json')
 
 @login_required
-def executeScriptOutput(request,taskid):
+def executeViaFabricOutput(request,taskid):
     """
-    The  **executeScriptOutput** function returns the status and output for the Celery task used to execute a **DistributedScript** or **LocalScript** in JSON format
+    The  **executeViaFabricOutput** function returns the status and output for the Celery task used to execute a **DistributedScript** or **LocalScript** in JSON format
     """
     result = AsyncResult(taskid)
     

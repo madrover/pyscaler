@@ -7,6 +7,7 @@ Welcome to PyScaler's documentation!
    
    project
    features
+   doccode
    usecases
    design
    installation
