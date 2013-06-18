@@ -64,7 +64,9 @@ The following steps describe  the installation of PyScaler on a Centos 6 box.
 - Jpype python lib needs Java JDK to be installed and have JAVA_HOME 
   defined to build correctly. More details `here <http://thomas-cokelaer.info/blog/2012/10/installing-jpype-to-use-java-from-python/>`_.
 
-  export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk.x86_64/
+  ::
+  
+    export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk.x86_64/
 
 - Install pyscaler python lib requirements
 
@@ -75,7 +77,7 @@ The following steps describe  the installation of PyScaler on a Centos 6 box.
 - Configure Nginx to forward requests to Django / Gunicorn. There is a good guide `here. <http://honza.ca/2011/05/deploying-django-with-nginx-and-gunicorn>`_
 
 
-This is an example nginx configuration
+    This is an example nginx configuration
 
  :: 
 
