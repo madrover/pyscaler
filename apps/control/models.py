@@ -164,11 +164,11 @@ class Trigger(models.Model):
     """
     **Trigger** name.
     """
-    counters = models.ManyToManyField(Counter,related_name='triggers')
+    counters = models.ManyToManyField(Counter,related_name='triggers',blank=True,null=True)
     """
     Associated **Counters**.
     """
-    timing = models.IntegerField()
+    timing = models.IntegerField(blank=True,null=True)
     """
     Number of minutes that must elapse when any of the associated thresholds are reached until the associated **Actions** are executed.
     """

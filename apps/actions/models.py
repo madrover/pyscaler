@@ -18,6 +18,10 @@ class Action(models.Model):
     """
     Associated **Triggers**
     """
+    timeout=models.IntegerField(default=60)
+    """
+    Maximum number of seconds
+    """
     objects = InheritanceManager()
 
     def __unicode__(self):
