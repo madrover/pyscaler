@@ -36,4 +36,7 @@ Bibliography
   - Puppet http://www.puppetlabs.com/
 
 
-
+- Security
+  - Secure Shell http://en.wikipedia.org/wiki/Secure_Shell
+  - Public-key cryptography http://en.wikipedia.org/wiki/Public-key_cryptography
+  - JMX security http://docs.oracle.com/javase/6/docs/technotes/guides/management/agent.html

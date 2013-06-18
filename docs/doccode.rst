@@ -25,4 +25,4 @@ Code
 
 PyScaler source code can be found at https://github.com/madrover/pyscaler.
 
-It is released under `Apache License Version 2.0 <http://www.apache.org/licenses/>`_
+It is released under `Apache License Version 2.0 <http://www.apache.org/licenses/>`_ license.
