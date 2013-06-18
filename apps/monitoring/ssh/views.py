@@ -90,6 +90,7 @@ def SshCounterData(node,counter):
         epoch= time.mktime(difference.timetuple()) * 1000
         #print epoch
         epochkeysdict[epoch]=ckey
+        
     
     cachedict = cache.get_many(epochkeysdict.values())
     for epochkey in epochkeysdict.items():
@@ -101,31 +102,6 @@ def SshCounterData(node,counter):
             epochkeysdict[key]="null"
     
     return sorted(epochkeysdict.items())
-
-def SshCounterData2(node,counter):
-    now = datetime.datetime.now()
-    utcnow = datetime.datetime.utcnow()
-#     print now
-#     print utcnow
-    key = 'ssh_sshcounter.' +  str(node.pk) + '.' +  str(counter.pk) + '.'
-    outlist = []
-    for i in xrange(120,1,-1):#1440,1,-1):
-        td=datetime.timedelta(minutes=1)
-        difference = now - (i * td)
-#         print str(difference) + " " + str( time.mktime(difference.timetuple()))
-        ckey = key + difference.strftime('%Y%m%d%H%M')
-        utcdifference = utcnow - (i * td)
-#         print str(utcdifference) + " " + str( time.mktime(utcdifference.timetuple()))
-        # Flot expects javascript format (epoch in ms)
-        epoch= time.mktime(difference.timetuple()) * 1000
-        #print epoch
-        gckey = cache.get(ckey)
-        if gckey == None:
-            a=[ epoch,"null"]
-        else:
-            a=[ epoch,gckey]
-        outlist.append(a)
-    return outlist
 
 
 def clusterCounterValues(request,cluster,counter):

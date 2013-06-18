@@ -46,6 +46,6 @@ class DeployEc2ProfileAdmin(admin.ModelAdmin):
     """
     list_display = ('name','ec2profile','sshprofile',)
     search_fields = ('name','ec2profile','sshprofile',)
-    filter_horizontal = ('jvmprofile',)
+    filter_horizontal = ('jvmprofiles',)
 #Registering DeployEc2ProfileAdmin
 admin.site.register(DeployEc2Node,DeployEc2ProfileAdmin)

@@ -3,12 +3,11 @@ The **apps.actions.tasks** module contains the Celery tasks for the **actions** 
 """
 from djcelery import celery
 from celery.utils.log import get_task_logger
-import time,os
+import time,os,subprocess,socket
 from apps.actions.models import DistributedScript, LocalScript, OSConfiguration
-from apps.control.models import Cluster, Node
-import subprocess
+from apps.control.models import Cluster, Node 
 from django.conf import settings
-import boto, boto.ec2
+import boto.ec2, boto.ec2.elb
 
 #Get celery logger
 logger = get_task_logger(__name__)
@@ -70,7 +69,7 @@ def ec2nodeDeploy(cluster,ec2profile,sshprofile,jvmprofiles):
     | It needs **AWSAccessKeyId** and **AWSSecretKey** to be defined in Django's **settings.py**
     """
     
-    logger.debug("Determining new node name")
+    logger.debug("Ec2deploy Determining new node name")
     nodes = []
     for node in cluster.nodes.all():
         nodes.append(node.name)
@@ -80,7 +79,7 @@ def ec2nodeDeploy(cluster,ec2profile,sshprofile,jvmprofiles):
         if nodename not in nodes:
             break
 
-    logger.debug("Connecting to AWS")
+    logger.debug("Ec2deploy Connecting to AWS")
     try:
         conn = boto.ec2.connect_to_region(ec2profile.region,
                                           aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -89,7 +88,7 @@ def ec2nodeDeploy(cluster,ec2profile,sshprofile,jvmprofiles):
         result="ERROR\n" + str(e)
         return result
     
-    logger.debug("Creating new EC2 instance for node " + nodename)
+    logger.debug("Ec2deploy Creating new EC2 instance for node " + nodename)
     try:
         reservation = conn.run_instances(
             image_id = ec2profile.image_id ,
@@ -115,17 +114,45 @@ def ec2nodeDeploy(cluster,ec2profile,sshprofile,jvmprofiles):
         result='Instance status: ' + status
         return result
     
+    elbconn = boto.ec2.elb.connect_to_region(ec2profile.region,
+                                             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                                             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+    balancers = elbconn.get_all_load_balancers(load_balancer_names=[ec2profile.load_balancer])
+    for balancer in balancers:
+        instance_ids = [instance.id]
+        balancer.register_instances(instance_ids)
+
     #Creating new Node inside PyScaler
     try:
+        logger.debug("Ec2deploy Creating Node " + nodename + " on the configuration database.")
         node = Node(name=nodename,cluster=cluster,ec2profile= ec2profile, hostname=instance.public_dns_name,sshprofile=sshprofile)
         node.save()
         for jvmprofile in jvmprofiles:
             node.jvmprofiles.add(jvmprofile)
         node.save()
     except Exception as e:
-        result="ERROR\n" + str(e)
+        logger.debug(str(e))
         return result
+        
+    s = socket.socket()
+    connected = False
+    timeout = 120
+    initepoch = epoch = time.mktime(time.gmtime())
     
+    while not connected:
+        try:
+            logger.debug("Ec2deploy Testing if " +  instance.public_dns_name + ":22 is open")
+            s.connect((instance.public_dns_name, 22))
+            logger.debug("Ec2deploy " + instance.public_dns_name + " fully started")
+            connected = True
+        except Exception as e:
+            epoch = time.mktime(time.gmtime())
+            if ((epoch - initepoch) > timeout):
+                logger.debug("Ec2deploy Timeout waiting for " + instance.public_dns_name + " to start")
+                break
+            else:
+                time.sleep(10)
+            
     result = "New node " + nodename + " on cluster " + cluster.name + " with hostname " + instance.public_dns_name
 
     return result

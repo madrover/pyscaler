@@ -203,12 +203,16 @@ def triggerExecute(request,trigger):
             subtask = executeViaFabric.si(destination,action)
             subtasks.append(subtask)
         elif isinstance(action, DeployEc2Node):
-            subtask = ec2nodeDeploy.si(destination,action.ec2profile,action.sshprofile,action.jvmprofiles)
+#             jvmprofiles = []
+#             for jvmprofile in action.jvmprofiles:
+#                 jvmprofiles.append(jvmprofile)
+            subtask = ec2nodeDeploy.si(destination,action.ec2profile,action.sshprofile,action.jvmprofiles.all())
             subtasks.append(subtask)
         elif isinstance(action, Email):
             pass
         elif isinstance(action, OSConfiguration):
-            pass
+            subtask = executeViaFabric.si(destination,action)
+            subtasks.append(subtask)
     
     # The trigger subtasks are handed over to celery to be executed sequentially
     task = chain(*subtasks).apply_async()

@@ -55,7 +55,7 @@
 {"pk": 6, "model": "actions.osconfiguration", "fields": {"puppetfile": "/opt/django/pyscaler/puppet/tomcat.pp"}},
 {"pk": 3, "model": "actions.localscript", "fields": {"script": "uname -a"}},
 {"pk": 2, "model": "actions.distributedscript", "fields": {"fabfile": "/opt/django/pyscaler/fabfiles/fabtest.py", "commandLine": "host_type"}},
-{"pk": 1, "model": "actions.deployec2node", "fields": {"jvmprofile": [1], "sshprofile": 1, "ec2profile": 1}},
+{"pk": 1, "model": "actions.deployec2node", "fields": {"jvmprofiles": [1], "sshprofile": 1, "ec2profile": 1}},
 {"pk": 2, "model": "djcelery.crontabschedule", "fields": {"month_of_year": "*", "day_of_week": "*", "hour": "*", "minute": "*", "day_of_month": "*"}}, 
 {"pk": 2, "model": "djcelery.periodictask", "fields": {"task": "apps.control.tasks.getTriggerCounters", "name": "Execute Trigger Counters", "exchange": null, "last_run_at": "2013-06-06T23:13:00.006Z", "args": "[]", "enabled": true, "routing_key": null, "crontab": 2, "interval": null, "queue": null, "total_run_count": 5, "expires": null, "kwargs": "{}", "date_changed": "2013-06-06T23:13:00.029Z", "description": ""}}
 ]

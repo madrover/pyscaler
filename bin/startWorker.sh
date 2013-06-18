@@ -1,9 +1,11 @@
 #!/bin/sh
 
+cd /opt/django/pyscaler
+
 ps -ef | grep manage.py | grep celery | awk '{print $2}' | xargs kill -9
 python manage.py celery flower &
 
-cd ..
+
 while getopts ":d" opt; do
   case $opt in
     d)

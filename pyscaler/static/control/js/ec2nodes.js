@@ -20,15 +20,15 @@
 								$("#output").append("<pre>" + $.ns.output.result + "</pre></br>");
 				  				};
 				  		});
-					  	if (counter==60){
+					  	if (counter==120){
 					  		clearInterval(intervalId);
 					  		$("#output").append("</br><b>Task timeout</b>");
 						};
 				  	} ;
-					
+					if (counter%2==0){
 					  	$("#output").append(".");
-						return counter
 					}
+				}
 				, 1000);
 		})
 		.fail(function() { $("#output").append("<b>Error creating task</b>"); });

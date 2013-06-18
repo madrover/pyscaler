@@ -105,7 +105,7 @@ class DeployEc2Node(Action):
     """
     The **sshprofile** associated with the new **Node**.
     """
-    jvmprofile = models.ManyToManyField(JvmProfile)
+    jvmprofiles = models.ManyToManyField(JvmProfile)
     """
     The **jvmprofiles** associated with the new **Node**.
     """

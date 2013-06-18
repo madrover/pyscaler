@@ -97,7 +97,8 @@ Some common Celery use cases:
 As Django is a web application it just executes code when an url is
 called. As PyScaler needs to execute code on a scheduled basis
 (performance data collecting, etc...), it relies on Celery scheduling
-capabilities to automate the code execution.
+capabilities to automate the code execution. The Celery component that
+handles the periodics tasks is called Celerybeat.
 
 PyScaler can invoke lengthy operations such as virtual machine
 deployments, etc... Being PyScaler a web application it is supposed to
@@ -231,7 +232,6 @@ Relevant libraries
   used in the project to execute JMX related code to collect remote JVMs
   performance data.
 
-
 apps.monitoring.ssh app
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -301,13 +301,33 @@ There are two types of data managed by PyScaler.
 Performance data
 ---------------------
 
-The performance data is stored in Memcached. Data is stored in a dictionary dataç
+The performance data is stored in Memcached. Data is stored in a dictionary data
 structure with the following format 
 
 - **Key / Value format**
 
   - jmx\_jmxcounter.<nodeId>.<jvmid>.<counterid>.yymmhhddhhmmss : <Value>
-  - ssh\_sshcounter.<nodeId>.<jvmid>.<counterid>.yymmhhddhhmmss : <Value>
+  - ssh\_sshcounter.<nodeId>.<counterid>.yymmhhddhhmmss : <Value>
+
+ For example:
+
+ - jmx\_jmxcounter.3.5.201306182046:600
+ - ssh\_sshcounter.2.4.201306182046:300
+
+Each monitored counter has got an additional field to store the number of 
+times that the threshold has been reached. This is used to trigger actions 
+if the threshold has been hit a number of times. Once the threshold is not 
+reached then the counter is reset.
+
+- **Key / Value format**
+
+  - jmx\_jmxcounter.<nodeId>.<jvmid>.<counterid> : <Value>
+  - ssh\_sshcounter.<nodeId>.<counterid> : <Value>
+
+ For example:
+
+ - jmx\_jmxcounter.3.5:5
+ - ssh\_sshcounter.2.4:10
 
 Configuration data
 --------------------------------------------------

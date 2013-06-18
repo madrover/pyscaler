@@ -17,10 +17,11 @@ Features
 
  - **Interactive counter graphs**
    
-   The performance data can be easily visualized using available graphs.. 
+   The performance data can be easily visualized using available graphs.
    There are different graphs per monitored target and counters that can be zoomed.
 
 - **Control**
+
    PySCaler can be execute actions against its managed nodes. These action
    can be execute manually or triggered automatically when defined 
    performance thresholds are hit.
@@ -44,6 +45,7 @@ Features
    amount of time.
 
 - **Provisioning**
+
    PyScaler can be used to provision new servers.
 
  - **EC2 node deployment**
@@ -68,14 +70,16 @@ Features
   Celery can be used to handle retries and distribution of the tasks.
   
 - **Restful urls and API**
+
   PyScaler urls are cleanly designed to be understood by human beings.
   Most available objects are exposed via a restful API and JSON
 
 - **Ajax based interface**
+
   The usage of a task based backend along the jquery and json enables the 
   development of a fluid ajax based interface.
   
-  - **High availability**
+- **High availability**
 
   Each component of PyScaler is designed to be highly available.
   

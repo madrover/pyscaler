@@ -118,8 +118,9 @@ TEMPLATE_DIRS = [
 ]
 
 INSTALLED_APPS = [
-     'grappelli.dashboard',
-     'grappelli',
+     "gunicorn",
+     "grappelli.dashboard",
+     "grappelli",
      "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -194,7 +195,7 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(PROJECT_ROOT, 'logs/mylog.log'),
+            'filename': os.path.join(PROJECT_ROOT, 'logs/pyscaler.log'),
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',

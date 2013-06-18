@@ -90,14 +90,14 @@ $(document).ready(function(){
 		 				};
 		 		});
 		 	
-		 		if (window.seconds >=60){
+		 		if (window.seconds >=120){
 					if ($("#" + data.taskid + "out").text() == "") {
 						$("#" + data.taskid + "out").append("</br><b>Task timeout</b>");
 						window.currenttask = window.currenttask + 1
 					};
 				};
 			}
-		if ($("#" + data[window.currenttask].taskid + "out").text() == "") {
+		if (($("#" + data[window.currenttask].taskid + "out").text() == "") && (window.seconds%2==0)){
 				$("#" + data[window.currenttask].taskid).append(".");
 		};
 			

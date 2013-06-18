@@ -18,51 +18,53 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
         
-        # append a group for "Administration" & "Applications"
         self.children.append(modules.Group(
-            _('Group: Administration & Applications'),
+            _('Pyscaler                                                                           '),
             column=1,
             collapsible=True,
             children = [
                 modules.AppList(
-                    _('Administration'),
-                    column=1,
-                    collapsible=False,
-                    models=('django.contrib.*',),
-                    exclude=('django.contrib.*Group','django.contrib.*Site',),
-                ),
-                modules.AppList(
-                    _('Applications'),
-                    column=1,
-                    css_classes=('collapse closed',),
-                    exclude=('django.contrib.*',),
-                )
-            ]
-        ))
-        self.children.append(modules.Group(
-            _('Pyscaler                                                                           '),
-            column=2,
-            collapsible=True,
-            children = [
-                modules.AppList(
                     _('Control'),
-                    column=2,
+                    column=1,
                     css_classes=('collapse closed',),
                     models=('apps.control.models.*',),
                 ),
                modules.AppList(
                     _('Monitoring'),
-                    column=2,
+                    column=1,
                     css_classes=('collapse closed',),
                     models=('apps.monitoring.*',),
                     #exclude=('django.contrib.*Group','django.contrib.*Site',),
                 ),
                 modules.AppList(
                     _('Actions'),
-                    column=2,
+                    column=1,
                     models=('apps.actions.*',   ),
                     css_classes=('collapse closed',),
                     exclude=('django.contrib.*',),
+                )
+            ]
+        ))
+        
+                             
+        # append a group for "Administration" & "Applications"
+        self.children.append(modules.Group(
+            _('Django'),
+            column=2,
+            collapsible=True,
+            children = [
+                modules.AppList(
+                    _('Administration'),
+                    column=2,
+                    collapsible=False,
+                    models=('django.contrib.*','*event*'),
+                    exclude=('django.contrib.*Group','django.contrib.*Site',),
+                ),
+                modules.AppList(
+                    _('Celery'),
+                    column=2,
+                    css_classes=('collapse closed',),
+                    models=('*celery*',),
                 )
             ]
         ))
@@ -85,27 +87,7 @@ class CustomIndexDashboard(Dashboard):
 #         ))
         
         # append another link list module for "support".
-        self.children.append(modules.LinkList(
-            _('PyScaler'),
-            column=3,
-            children=[
-                {
-                    'title': _('Monitoring'),
-                    'url': '/monitoring/',
-                    'external': False,
-                },
-                {
-                    'title': _('Provisioning'),
-                    'url': '/actions/',
-                    'external': False,
-                },
-                {
-                    'title': _('Control'),
-                    'url': '/control/',
-                    'external': False,
-                },
-            ]
-        ))
+
         
         # append another link list module for "support".
         self.children.append(modules.LinkList(
@@ -113,29 +95,21 @@ class CustomIndexDashboard(Dashboard):
             column=3,
             children=[
                 {
+                    'title': _('Pyscaler Documentation'),
+                    'url': 'http://pyscaler.readthedocs.org',
+                    'external': True,
+                },
+                {
                     'title': _('Django Documentation'),
                     'url': 'http://docs.djangoproject.com/',
                     'external': True,
                 },
                 {
-                    'title': _('Grappelli Documentation'),
-                    'url': 'http://packages.python.org/django-grappelli/',
-                    'external': True,
-                },
-                {
-                    'title': _('Grappelli Google-Code'),
-                    'url': 'http://code.google.com/p/django-grappelli/',
+                    'title': _('Celery Documentation'),
+                    'url': 'http://docs.celeryproject.org/en/latest/',
                     'external': True,
                 },
             ]
-        ))
-        
-        # append a feed module
-        self.children.append(modules.Feed(
-            _('Latest Django News'),
-            column=3,
-            feed_url='http://www.djangoproject.com/rss/weblog/',
-            limit=5
         ))
         
         # append a recent actions module
