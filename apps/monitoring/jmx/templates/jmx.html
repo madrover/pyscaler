@@ -40,7 +40,7 @@
 			<ul>
 			{% for node in cluster.nodes.all %}
 				{% for jvm in node.jvmprofiles.all %}
-				<li><a href="jvm/{{jvm.node.name}}/{{jvm.name}}">{{node.name}}/{{jvm.name}}</a></li>
+				<li><a href="jvm/{{node.name}}/{{jvm.name}}">{{node.name}}/{{jvm.name}}</a></li>
 				{% endfor %}
 			{% endfor %}
 			</ul>

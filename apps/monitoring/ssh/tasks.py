@@ -66,7 +66,22 @@ def getSshTriggerCounters(node,trigger):
                 logger.error(str(e))
                 ssh.close()
                 return error
-            key = 'ssh_sshcounter.' +  str(node.pk) + '.' +  str(counter.pk) + '.' + datetime.datetime.now().strftime('%Y%m%d%H%M') 
+            
+            
+            key = 'ssh_sshcounter.' +  str(node.pk) + '.' +  str(counter.pk)
+            # Update threshold counter in memached
+            thresholdCounter = cache.get(key)
+            if thresholdCounter == None:
+                thresholdCounter = 0
+            thresholdCounter = int(thresholdCounter)
+            if float(value) > counter.threshold:
+                thresholdCounter = thresholdCounter + 1
+            else:
+                thresholdCounter = 0
+            cache.set(key,thresholdCounter,86400)   
+            
+            key = key + '.' + datetime.datetime.now().strftime('%Y%m%d%H%M') 
+             
             #Send value to cache backend
             logger.debug('SSH value: ' + node.name + '.'+ counter.name + ':' + value)
             logger.debug('SSH cache entry: ' + key + ':' + value)

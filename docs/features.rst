@@ -3,7 +3,7 @@ Features
 
 - **Monitoring** 
    PyScaler is able to monitor remote hosts and store the performance 
-   data for further analysis and business logic. 
+   data for further analysis and business logic.
 
  - **SSH monitoring**
 

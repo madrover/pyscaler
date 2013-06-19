@@ -84,6 +84,9 @@ def jvm(request,node,jvm):
     return render(request, 'jmxjvm.html',context)
 
 def JmxCounterData(node,jvm,counter):
+    """
+    The **JmxCounterData** connects to memcached and gathers last 24 hours performance data for a specific counter
+    """
     now = datetime.datetime.now()
     utcnow = datetime.datetime.utcnow()
     #print now
@@ -112,32 +115,6 @@ def JmxCounterData(node,jvm,counter):
             epochkeysdict[key]="null"
     
     return sorted(epochkeysdict.items())
-
-def JmxCounterData2(node,jvm,counter):
-    now = datetime.datetime.now()
-    utcnow = datetime.datetime.utcnow()
-    #print now
-    #print utcnow
-    key = 'jmx_jmxcounter.' +  str(node.pk) + '.' +  str(jvm.pk) +  '.' +  str(counter.pk) + '.'
-    outlist = []
-    for i in xrange(1440,1,-1):#1440,1,-1):
-        td=datetime.timedelta(minutes=1)
-        difference = now - (i * td)
-        #print str(difference) + " " + str( time.mktime(difference.timetuple()))
-        ckey = key + difference.strftime('%Y%m%d%H%M')
-        utcdifference = utcnow - (i * td)
-        #print str(utcdifference) + " " + str( time.mktime(utcdifference.timetuple()))
-        # Flot expects javascript format (epoch in ms)
-        epoch= time.mktime(difference.timetuple()) * 1000
-        #print epoch
-        gckey = cache.get(ckey)
-        if gckey == None:
-            a=[ epoch,"null"]
-        else:
-            a=[ epoch,gckey]
-        outlist.append(a)
-    return outlist
-
 
 @login_required
 def clusterCounterValues(request,cluster,counter):

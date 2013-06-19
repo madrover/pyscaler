@@ -59,13 +59,14 @@ $(document).ready(function(){
 								$("#output").append("<pre>" + $.ns.output.result + "</pre></br>");
 			      				};
 			      		});
-			      	if (a==60){
+			      	if (a==120){
 			      		clearInterval(intervalId);
 			      		$("#output").append("</br><b>Task timeout</b>");
 			      		}
 			      	};
-
-			      	$("#output").append(".");
+					if (a%2==0){
+			      		$("#output").append(".");
+			        }
 			    }, 1000);
 		})
 		.fail(function() { $("#output").append("<b>Error creating task</b>"); });
