@@ -2,59 +2,59 @@ Features
 ===============
 
 - **Monitoring** 
-   PyScaler is able to monitor remote hosts and store the performance 
-   data for further analysis and business logic.
+  PyScaler is able to monitor remote hosts and store the performance 
+  data for further analysis and business logic.
 
- - **SSH monitoring**
+- **SSH monitoring**
+  
+  PyScaler can connect to remote hosts via SSH, execute scripts to gather 
+  performance data and index its output.
 
-   PyScaler can connect to remote hosts via SSH, execute scripts to gather 
-   performance data and index its output.
+- **JMX monitoring**
+  
+  PyScaler can connect to remote JVMs via JMX and gather performance data
+  via the exposed mbeans.  
 
- - **JMX monitoring**
-
-   PyScaler can connect to remote JVMs via JMX and gather performance data
-   via the exposed mbeans.  
-
- - **Interactive counter graphs**
-   
-   The performance data can be easily visualized using available graphs.
-   There are different graphs per monitored target and counters that can be zoomed.
+- **Interactive counter graphs**
+  
+  The performance data can be easily visualized using available graphs.
+  There are different graphs per monitored target and counters that can be zoomed.
 
 - **Control**
 
-   PySCaler can be execute actions against its managed nodes. These action
-   can be execute manually or triggered automatically when defined 
-   performance thresholds are hit.
+  PySCaler can be execute actions against its managed nodes. These action
+  can be execute manually or triggered automatically when defined 
+  performance thresholds are hit.
 
- - **Remote command execution**
-   
-   It can execute command locally on specific nodes or on all the nodes 
-   from a cluster.
+- **Remote command execution**
+  
+  It can execute command locally on specific nodes or on all the nodes 
+  from a cluster.
 
- - **Fabric scripts execution**
-   
-   It can execute Fabric scripts that can be used to execute local or 
-   remote shell commands (normally or via sudo) and uploading/downloading
-   files, as well as auxiliary functionality such as prompting the 
-   running user for input, or aborting execution. 
-   
- - **Triggers**
-   
-   PyScaler can analyze available performance data and automatically trigger
-   defined actions when a performance threshold is reached during a certain
-   amount of time.
+- **Fabric scripts execution**
+  
+  It can execute Fabric scripts that can be used to execute local or 
+  remote shell commands (normally or via sudo) and uploading/downloading
+  files, as well as auxiliary functionality such as prompting the 
+  running user for input, or aborting execution. 
+  
+- **Triggers**
+  
+  PyScaler can analyze available performance data and automatically trigger
+  defined actions when a performance threshold is reached during a certain
+  amount of time.
 
 - **Provisioning**
 
-   PyScaler can be used to provision new servers.
+  PyScaler can be used to provision new servers.
 
- - **EC2 node deployment**
-   
-   PyScaler can launch new Amazon EC2 instances with defined parameters.
+- **EC2 node deployment**
+  
+  PyScaler can launch new Amazon EC2 instances with defined parameters.
 
- - **Operating system configuration**
-   
-   PyScaler can provision nodes using Puppet.
+- **Operating system configuration**
+  
+  PyScaler can provision nodes using Puppet.
 
 - **Deployment scaling**
   
