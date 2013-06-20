@@ -59,7 +59,7 @@ $(document).ready(function(){
 								$("#output").append("<pre>" + $.ns.output.result + "</pre></br>");
 			      				};
 			      		});
-			      	if (a==120){
+			      	if (a==300){
 			      		clearInterval(intervalId);
 			      		$("#output").append("</br><b>Task timeout</b>");
 			      		}

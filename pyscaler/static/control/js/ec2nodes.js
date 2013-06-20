@@ -20,7 +20,7 @@
 								$("#output").append("<pre>" + $.ns.output.result + "</pre></br>");
 				  				};
 				  		});
-					  	if (counter==120){
+					  	if (counter==300){
 					  		clearInterval(intervalId);
 					  		$("#output").append("</br><b>Task timeout</b>");
 						};

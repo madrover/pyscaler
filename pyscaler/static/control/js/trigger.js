@@ -61,7 +61,7 @@ $(document).ready(function(){
 				$("#" + taskid).append("<b>Task ID: " + taskid + "</b></br>");
 				$("#" + taskid).append("<b>Executing</b>");
 			}
-			window.seconds =0;
+			;
 			window.currenttask = 0
 			window.intervalId = setInterval( function(){checktaskoutput(data)}, 1000);
 		})
@@ -86,14 +86,16 @@ $(document).ready(function(){
 							$("#" + data.taskid + "out").append("<b>Output = </b></br>");
 							$("#" + data.taskid + "out").append("<pre>" + data.result + "</pre></br>");
 							window.currenttask = window.currenttask + 1
+							window.seconds=0
 							}
 		 				};
 		 		});
 		 	
-		 		if (window.seconds >=120){
+		 		if (window.seconds >=300){
 					if ($("#" + data.taskid + "out").text() == "") {
 						$("#" + data.taskid + "out").append("</br><b>Task timeout</b>");
 						window.currenttask = window.currenttask + 1
+						window.seconds=0
 					};
 				};
 			}

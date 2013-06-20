@@ -41,4 +41,4 @@ def getTriggerCounters():
                             getJvmTriggerCounters.delay(node,jvm,trigger)
                         launchjmx = False
 
-    return "getTriggerCounters OK"
+    return "Trigger Counters Launched"
