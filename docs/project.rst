@@ -1,4 +1,4 @@
-PyScaler Project
+Project
 =======
 
 Introduction
@@ -99,6 +99,7 @@ There are different components that must be created:
 - A module to automate the deployment of a new virtual machines
 - A module that is able to provision the virtual machine
 - A module that is able to integrate the virtual machine in an existing cluster
+- A module that execute remote tasks
 
 Objectives
 ------------------
@@ -118,6 +119,22 @@ The objectives that we are trying to achieve with this project are:
   of one specific IaaS provider it should be designed to easily deploy
   new performance counter sources and IaaS providers
 
+Methodology
+-------------
+This project is designed using the DevOps approach to IT management. DevOps
+is a software development method that stresses communication, collaboration
+and integration between software developers and information technology (IT)
+professionals. DevOps is a response to the interdependence of software 
+development and IT operations. It aims to help an organization rapidly
+produce software products and services.
+
+Some of the DevOps key points are:
+
+- Use of agile and other development processes and methodologies
+- Usage of virtualized  and cloud infrastructure from internal and external providers
+- Usage of data center automation and configuration management tools
+- More frequent and faster deployments
+- Deployment flexibility
 
 Risk analysis
 ------------------

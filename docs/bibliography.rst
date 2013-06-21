@@ -7,6 +7,9 @@ Bibliography
 
     - `Amazon Elastic Compute Cloud (EC2) Documentation <http://aws.amazon.com/documentation/ec2/>`_
     - `Elastic Load Balancing Documentation <http://aws.amazon.com/documentation/elasticloadbalancing/>`_
+
+- Devops
+
     - `Web Ops 2.0: Achieving Fully Automated Provisioning <http://dev2ops.squarespace.com/storage/downloads/FullyAutomatedProvisioning_Whitepaper.pdf>`_
 
 - Performance / Monitoring
