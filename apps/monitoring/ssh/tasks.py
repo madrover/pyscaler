@@ -74,11 +74,22 @@ def getSshTriggerCounters(node,trigger):
             if thresholdCounter == None:
                 thresholdCounter = 0
             thresholdCounter = int(thresholdCounter)
-            if float(value) > counter.threshold:
-                thresholdCounter = thresholdCounter + 1
-            else:
-                thresholdCounter = 0
-            cache.set(key,thresholdCounter,86400)   
+            if counter.comparison == ">":
+                if float(value) > counter.threshold:
+                    thresholdCounter = thresholdCounter + 1
+                else:
+                    thresholdCounter = 0
+            if counter.comparison == "<":
+                if float(value) < counter.threshold:
+                    thresholdCounter = thresholdCounter + 1
+                else:
+                    thresholdCounter = 0
+            if counter.comparison == "=":
+                if float(value) == counter.threshold:
+                    thresholdCounter = thresholdCounter + 1
+                else:
+                    thresholdCounter = 0
+            cache.set(key,thresholdCounter,86400)
             
             key = key + '.' + datetime.datetime.now().strftime('%Y%m%d%H%M') 
              

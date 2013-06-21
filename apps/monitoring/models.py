@@ -19,7 +19,7 @@ class Counter(models.Model):
         ('>', 'Greater'),
     )
     comparison = models.CharField(max_length=1, choices=COMPARISON)
-    threshold = models.CharField(max_length=30)
+    threshold = models.IntegerField()
     objects = InheritanceManager()
     def __unicode__(self):
         return unicode(self.name)

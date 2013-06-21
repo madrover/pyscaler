@@ -45,7 +45,9 @@ def node(request,node):
     return render(request, 'sshnode.html',context)
 
 def cluster(request,cluster):
-    
+    """
+    The **cluster** view shows SSH graphs for a specific Cluster.
+    """
     # Validate if cluster extsts
     cluster = get_object_or_404(Cluster,name=cluster)
     context = Context({'cluster': cluster,})
@@ -73,6 +75,9 @@ def cluster(request,cluster):
     return render(request, 'sshcluster.html',context)
 
 def SshCounterData(node,counter):
+    """
+    The **SshCounterData** function connects to memcached and gathers last 24 hours performance data for a specific counter
+    """
     now = datetime.datetime.now()
     utcnow = datetime.datetime.utcnow()
     #print now
@@ -105,6 +110,9 @@ def SshCounterData(node,counter):
 
 
 def clusterCounterValues(request,cluster,counter):
+    """
+    The **clusterCounterValues** view returns last 24h of performance data for a specific Cluster and Counter in JSON format,
+    """
     try:
         cluster = Cluster.objects.get(name__exact=cluster)
     except Cluster.DoesNotExist:
@@ -132,6 +140,9 @@ def clusterCounterValues(request,cluster,counter):
     return HttpResponse(data_out,mimetype="application/json")
 
 def nodeCounterValues(request,node,counter):
+    """
+    The **nodeCounterValues** view returns last 24h of performance data for a specific Node and Counter in JSON format,
+    """
     try:
         node = Node.objects.get(name__exact=node)
     except Node.DoesNotExist:

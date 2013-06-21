@@ -60,9 +60,10 @@ $(document).ready(function(){
 				$("#" + taskid).append("<b>" +  data[i].order + " - " + action + " Destination: " + data[i].destination + "</b></br>");
 				$("#" + taskid).append("<b>Task ID: " + taskid + "</b></br>");
 				$("#" + taskid).append("<b>Executing</b>");
-			}
-			;
-			window.currenttask = 0
+			};
+			
+			window.seconds = 0;
+			window.currenttask = 0;
 			window.intervalId = setInterval( function(){checktaskoutput(data)}, 1000);
 		})
 		.fail(function() { $("#output").append("<b>Error creating task</b>"); });
@@ -85,8 +86,8 @@ $(document).ready(function(){
 							$("#" + data.taskid + "out").append("<b>Task state = " + data.state + "</b></br>");
 							$("#" + data.taskid + "out").append("<b>Output = </b></br>");
 							$("#" + data.taskid + "out").append("<pre>" + data.result + "</pre></br>");
-							window.currenttask = window.currenttask + 1
-							window.seconds=0
+							window.currenttask = window.currenttask + 1;
+							window.seconds=0;
 							}
 		 				};
 		 		});
@@ -94,11 +95,11 @@ $(document).ready(function(){
 		 		if (window.seconds >=300){
 					if ($("#" + data.taskid + "out").text() == "") {
 						$("#" + data.taskid + "out").append("</br><b>Task timeout</b>");
-						window.currenttask = window.currenttask + 1
-						window.seconds=0
+						window.currenttask = window.currenttask + 1;
+						window.seconds=0;
 					};
 				};
-			}
+			};
 		if (($("#" + data[window.currenttask].taskid + "out").text() == "") && (window.seconds%2==0)){
 				$("#" + data[window.currenttask].taskid).append(".");
 		};

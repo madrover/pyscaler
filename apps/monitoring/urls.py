@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^jmx/', include('apps.monitoring.jmx.urls')),
     url(r'^ssh/', include('apps.monitoring.ssh.urls')),
+    url(r'^triggers/$', views.triggers, name='triggers'),
 )
 

@@ -82,17 +82,27 @@ def getJvmTriggerCounters(node,jvm,trigger):
                 return error
             key = 'jmx_jmxcounter.' +  str(node.pk) + '.' +  str(jvm.pk) +  '.' +  str(counter.pk)
             
-            
             # Update threshold counter in memached
             thresholdCounter = cache.get(key)
             if thresholdCounter == None:
                 thresholdCounter = 0
             thresholdCounter = int(thresholdCounter)
-            if float(value) > counter.threshold:
-                thresholdCounter = thresholdCounter + 1
-            else:
-                thresholdCounter = 0
-            cache.set(key,thresholdCounter,86400)   
+            if counter.comparison == ">":
+                if float(value) > counter.threshold:
+                    thresholdCounter = thresholdCounter + 1
+                else:
+                    thresholdCounter = 0
+            if counter.comparison == "<":
+                if float(value) < counter.threshold:
+                    thresholdCounter = thresholdCounter + 1
+                else:
+                    thresholdCounter = 0
+            if counter.comparison == "=":
+                if float(value) == counter.threshold:
+                    thresholdCounter = thresholdCounter + 1
+                else:
+                    thresholdCounter = 0
+            cache.set(key,thresholdCounter,86400)
             
             key = key + '.' + datetime.datetime.now().strftime('%Y%m%d%H%M') 
             #Send value to cache backend

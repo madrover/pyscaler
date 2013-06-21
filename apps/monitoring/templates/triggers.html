@@ -1,0 +1,55 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Triggers monitoring{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+	<h1>Triggers monitoring</h1>
+
+{% endblock %}
+
+
+{% block body %}
+<style>
+	.menutable {border: 2px solid white;}
+	.menutabletd {background-color:#EEEEEE;border: 2px solid white; width:150px;padding:10px;}
+</style>
+
+<h1>Triggers monitoring</h1>
+
+<table class="menutable">
+
+{% for item in counterdata %}
+<tr><th colspan="2" align="left">Cluster: {{item.cluster}} <b>Trigger:</b> {{item.trigger}}<b> Timing:</b> {{item.timing}}</th></tr>
+<tr>
+
+	<td class="menutabletd" style="width:250px">
+		<ul>
+			<li><b>Counter:</b> {{item.counter}}</li>
+			<li><b>Type:</b> {{item.type}}</li>	
+			<li><b>Threshold:</b> {{item.comparison}} {{item.threshold}}</li>
+		</ul>
+	</td>
+	<td class="menutabletd" style="width:600px">
+			<ul>
+				{% for value in item.values %} 
+					{% if item.type = "SshCounter" %}
+						<li><b>Node:</b> {{value.node}} <b>Last Value: </b>{{value.lastvalue}} <b>ThresholdCounter: </b> {{value.thresholdCounter}}</li>
+					{% endif %}
+					{% if item.type = "JmxCounter" %}
+						<li><b>Node:</b> {{value.node}} <b>JVM:</b> {{value.jvm}} <b>Last Value: </b>{{value.lastvalue}} <b>ThresholdCounter: </b> {{value.thresholdCounter}}</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+	</td>
+</tr>
+{% endfor %}
+</table>
+
+
+
+{% endblock %}
+

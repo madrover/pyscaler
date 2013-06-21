@@ -47,7 +47,7 @@ EC2  Nodes
      <td class="menutabletd">
 		<div id="jvmprofiles">
 			{% for jvmprofile in jvmprofiles %}
-		<input type="checkbox" name="jvmprofile[]" value="{{jvmprofile.name}}"> {{jvmprofile.name}}<br>
+		<input type="checkbox" class="jvmprofile" value="{{jvmprofile.name}}"> {{jvmprofile.name}}<br>
 		{% endfor %}
 		</div>
    	</td>

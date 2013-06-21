@@ -83,15 +83,15 @@ $(document).ready(function(){
     		$('#output').append("<b>Ssh profile not chosen</b>");
     		return;
     	}
-    	var jvmprofiles;
-    	$.each($("input[name='jvmprofile[]']:checked"), function() {
-  			if (typeof jvmprofiles === "undefined") {
-    			jvmprofiles = $(this).val();
-    		}else{
-    			jvmprofiles = jvmprofiles + "," + $(this).val();
-    		};
-		});
-    	if (typeof jvmprofiles === "undefined") {
+    	var jvmprofiles="";
+
+		$(":checked.jvmprofile").each(
+			function(index) {
+				jvmprofiles += (jvmprofiles == "" ? this.value : "," + this.value);
+			}
+    	);
+
+    	if (typeof jvmprofiles == "") {
     		$('#output').append("<b>Jvm profiles not chosen</b>");
     		return;
     	};

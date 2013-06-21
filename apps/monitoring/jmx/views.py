@@ -16,6 +16,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
+    """
+    The **index** view shows JMX counters graphs menu page.
+    """
     clusters = Cluster.objects.select_related().all()
     context = Context({
         'clusters': clusters,
@@ -24,6 +27,9 @@ def index(request):
 
 @login_required
 def node(request,node):
+    """
+    The **node** view shows JMX graphs for a specific Node.
+    """
     # Validates if node extsts
     node = get_object_or_404(Node,name=node)
     context = Context({'node': node})
@@ -43,7 +49,9 @@ def node(request,node):
 
 @login_required
 def cluster(request,cluster):
-        
+    """
+    The **cluster** view shows JMX graphs for a specific Cluster.
+    """
     # Validate if cluster extsts
     cluster = get_object_or_404(Cluster,name=cluster)
     context = Context({'cluster': cluster})
@@ -66,7 +74,7 @@ def cluster(request,cluster):
 @login_required
 def jvm(request,node,jvm):
     """
-    The **jvm** function is as an entry to the **JvmCounter** graphs pages. It uses the **jmxjvm.html** template.
+    The **jvm** view shows JMX graphs for a specific JVM.
     """
     node = get_object_or_404(Node,name=node)
     jvm = get_object_or_404(JvmProfile,name=jvm,node__name=node)
@@ -85,7 +93,7 @@ def jvm(request,node,jvm):
 
 def JmxCounterData(node,jvm,counter):
     """
-    The **JmxCounterData** connects to memcached and gathers last 24 hours performance data for a specific counter
+    The **JmxCounterData** function connects to memcached and gathers last 24 hours performance data for a specific counter
     """
     now = datetime.datetime.now()
     utcnow = datetime.datetime.utcnow()
@@ -118,6 +126,9 @@ def JmxCounterData(node,jvm,counter):
 
 @login_required
 def clusterCounterValues(request,cluster,counter):
+    """
+    The **clusterCounterValues** view returns last 24h of performance data for a specific Cluster and Counter in JSON format,
+    """
     try:
         cluster = Cluster.objects.get(name__exact=cluster)
     except Cluster.DoesNotExist:
@@ -148,6 +159,9 @@ def clusterCounterValues(request,cluster,counter):
 
 @login_required
 def nodeCounterValues(request,node,counter):
+    """
+    The **nodeCounterValues** view returns last 24h of performance data for a specific Node and Counter in JSON format,
+    """
     try:
         node = Node.objects.get(name__exact=node)
     except Node.DoesNotExist:
@@ -175,6 +189,9 @@ def nodeCounterValues(request,node,counter):
 
 @login_required
 def jvmCounterValues(request,node,jvm,counter):
+    """
+    The **jvmCounterValues** view returns last 24h of performance data for a specific Node, Jvm and Counter in JSON format,
+    """
     try:
         node = Node.objects.get(name__exact=node)
     except Node.DoesNotExist:

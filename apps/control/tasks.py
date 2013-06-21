@@ -8,6 +8,7 @@ from apps.monitoring.jmx.models import JmxCounter
 from apps.monitoring.jmx.tasks import getJvmTriggerCounters
 from apps.monitoring.ssh.tasks import getSshTriggerCounters
 from celery.utils.log import get_task_logger
+from django.core.cache import cache
 
 #Get celery logger
 logger = get_task_logger(__name__)
@@ -42,3 +43,46 @@ def getTriggerCounters():
                         launchjmx = False
 
     return "Trigger Counters Launched"
+
+
+@celery.task
+def checkTriggerThresholds():
+    """
+    The **checkTriggerThresholds** task reviews all  the **Counters** values associated with the the **Cluster** and **Triggers.
+    If the **Counter** threshold has been hit more times than assigned in the **Trigger** timing value then it will execute the associated **Actions** 
+    """
+    
+    clusters = Cluster.objects.select_related().all()
+    
+    # Generating dictionary with all the content needed for the template
+    for cluster in clusters:
+        for trigger in cluster.triggers.all():
+            for counter in trigger.counters.all().select_subclasses():
+                counterdict = {"cluster":cluster.name,"trigger":trigger.name,"timing":trigger.timing,"counter":counter.name,"comparison":counter.comparison,"threshold":counter.threshold,}
+                launchTrigger = False
+                for node in cluster.nodes.all():
+                    if isinstance(counter, SshCounter):
+                        key = 'ssh_sshcounter.' +  str(node.pk) + '.' +  str(counter.pk)
+                        thresholdCounter = cache.get(key)
+                        if thresholdCounter > trigger.timing:
+                            launchTrigger = True
+                        
+                    if isinstance(counter, JmxCounter):
+                        for jvm in node.jvmprofiles.all():
+                            key = 'jmx_jmxcounter.' +  str(node.pk) + '.' +  str(jvm.pk) +  '.' +  str(counter.pk)
+                            thresholdCounter = cache.get(key)
+                            if thresholdCounter > trigger.timing:
+                                launchTrigger = True
+                    
+                if launchTrigger and trigger.enabled:
+                    print "Counter " + counter.name + " from Trigger " +  trigger.name + " on Cluster " + cluster.name + " has been hit " +  str(thresholdCounter) + " times. Executing associated Actions."
+                    #logger.info(trigger.name + " on " + cluster.name + " has been hit " +  thresholdCounter + " times. Executing associated Actions.")
+                    for node in cluster.nodes.all():
+                        if isinstance(counter, SshCounter):
+                            key = 'ssh_sshcounter.' +  str(node.pk) + '.' +  str(counter.pk)
+                            thresholdCounter = cache.set(key,0)
+                            
+                        if isinstance(counter, JmxCounter):
+                            for jvm in node.jvmprofiles.all():
+                                key = 'jmx_jmxcounter.' +  str(node.pk) + '.' +  str(jvm.pk) +  '.' +  str(counter.pk)
+                                thresholdCounter = cache.set(key,0)
