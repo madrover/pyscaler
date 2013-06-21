@@ -50,7 +50,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PyScaler. Monitoring and automating cloud deployments.'
+project = u'PyScaler.'
 copyright = u'2013, Miquel Adrover'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -196,7 +196,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PyScaler.tex', u'PyScaler Documentation',
+  ('index', 'PyScaler.tex', u'PyScaler. Monitoring and automating cloud deployments.',
    u'Miquel Adrover', 'manual'),
 ]
 
