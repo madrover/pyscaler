@@ -12,8 +12,10 @@ Welcome to PyScaler's documentation!
    design
    installation
    userguide
+   scaling
    highavailability
    security
+   API
    modules 
    bibliography 
 

@@ -142,7 +142,7 @@ def clusterCounterValues(request,cluster,counter):
 def nodeCounterValues(request,node,counter):
     """
     The **nodeCounterValues** view returns last 24h of performance data for a specific Node and Counter in JSON format,
-    """
+    """ 
     try:
         node = Node.objects.get(name__exact=node)
     except Node.DoesNotExist:

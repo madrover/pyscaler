@@ -351,26 +351,3 @@ The following models contains the configuration information of PyScaler
 .. figure:: images/Data-Model.png
    :align: center
    :alt: 
-
-
-New Node deployment steps
------------------------------------
-This sections describes the steps needed to deploy a new node
-
-+--------------------------------------------------+--------------------------------------------+
-| STEP                                             |                                            |
-+==================================================+============================================+
-| Deploy a new VM on EC2 (clustername,user, )      | DeployEC2Node action                       |
-+--------------------------------------------------+--------------------------------------------+
-| Add the node to the Elastic Load Balancer        | DeployEC2Node action                       |
-+--------------------------------------------------+--------------------------------------------+
-| Operating system configuration and provisioning  | OSConfiguration action                     |
-+--------------------------------------------------+--------------------------------------------+
-| Tomcat configuration                             | LocalScript or DistributeScript actions    |
-+--------------------------------------------------+--------------------------------------------+
-| Application deployment                           | LocalScript or DistributeScript actions    |                   
-+--------------------------------------------------+--------------------------------------------+
-| Cluster update                                   | LocalScript or DistributeScript actions    |
-+--------------------------------------------------+--------------------------------------------+
-| Notification                                     | Email action                               |
-+--------------------------------------------------+--------------------------------------------+
