@@ -1,3 +1,6 @@
+'''
+This module contains de Django project settings that will be applied application wide.
+'''
 import os
 
 

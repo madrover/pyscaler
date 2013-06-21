@@ -4,15 +4,21 @@ Use Cases
 The PyScaler service can be used to:
 
 - As a System Administrator:
-   - Manage EC2 nodes
-   - Provision servers
    - Analyze performance
-   - Perform cluster manteinance tasks
+   - Manage servers
+   - Provision servers
 - As a developer:
-   - Push new applications versions to the cluster members
-   - Execute cluster wide scripts or locally in the nodes
+   - Deploy new applications
 - As a Server Operator:
-   - Monitor clustered health
-   - Generate alarms on performance thresholds
+   - Deploy new applications
+   - Monitor performance
+   - Trigger actions
 
+This use cases can be accomplished using the provided actions:
 
+- Manage EC2 nodes
+- Execute local scripts
+- Execute distributed scripts
+- Enfoce OS configurations
+
+.. image:: images/Use-Cases.png

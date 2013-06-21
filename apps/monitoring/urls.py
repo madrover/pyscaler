@@ -6,6 +6,7 @@ Available URLs:
 * **/monitoring** This url definition is implemented in apps.monitoring.views.index and is just a pass through to the specific monitoring modules
 * **/monitoring/jmx** This url definition is an included for the urls to be implemented in the jmx module
 * **/monitoring/ssh** This url definition is an included for the urls to be implemented in the ssh module
+* **/triggers** This url definition is implemented in apps.monitoring.views.triggers and shows a page to monitor triggers
 
 """
 from django.conf.urls import patterns, include, url

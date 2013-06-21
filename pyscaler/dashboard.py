@@ -1,5 +1,5 @@
 """
-This file is used by the Grappelli module and is used to configure the main dashboard of the administration pages.
+This module  is used by the Grappelli module and is used to configure the main dashboard of the administration pages.
 
 """
 
