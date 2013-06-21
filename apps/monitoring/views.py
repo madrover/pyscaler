@@ -61,7 +61,7 @@ def triggers(request):
         'counterdata':counterdata
     })
     tasks.checkTriggerThresholds()
-    return render(request, 'triggers.html',context)
+    return render(request, 'triggersmonitoring.html',context)
 
 
 

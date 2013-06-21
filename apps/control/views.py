@@ -137,7 +137,7 @@ def triggers(request):
     context = Context({
         'clusters': clusters,
     })
-    return render(request, 'triggers.html',context)
+    return render(request, 'triggerscontrol.html',context)
 
 
 @login_required
