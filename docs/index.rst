@@ -17,5 +17,6 @@ Welcome to PyScaler's documentation!
    security
    API
    modules 
+   troubleshooting
    bibliography 
 
