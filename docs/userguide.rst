@@ -61,6 +61,15 @@ Can be accessed through the menu **Monitoring -> Ssh -> Node**
 .. image:: images/pyscalerSSHNode.png
    :scale: 70 %
 
+Trigger monitoring
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Can be accessed through the menu **Monitoring -> Trigger monitoring**
+
+.. image:: images/Trigger-Monitoring.png
+   :scale: 70 %
+   
+
 Control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
